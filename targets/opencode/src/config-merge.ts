@@ -52,10 +52,16 @@ function mergeManagedAgents(source: string, managedAgents: readonly ManagedAgent
     }
     if (!existing || typeof existing !== "object" || Array.isArray(existing)) throw new Error(`Unmanaged OpenCode agent conflict: ${managed.id}`);
     const object = existing as Record<string, unknown>;
-    if (object.mode !== undefined && object.mode !== managed.mode) throw new Error(`Unmanaged OpenCode agent conflict: ${managed.id}.mode`);
-    if (object.permissions !== undefined && JSON.stringify(object.permissions) !== JSON.stringify(managed.permissions)) throw new Error(`Unmanaged OpenCode agent conflict: ${managed.id}.permissions`);
-    if (object.mode === undefined) result = applyEdits(result, modify(result, ["agents", managed.id, "mode"], managed.mode, { formattingOptions: formatting }));
-    if (object.permissions === undefined) result = applyEdits(result, modify(result, ["agents", managed.id, "permissions"], managed.permissions, { formattingOptions: formatting }));
+    // Skynex owns these two keys for managed agents. Overwrite them so upgrades
+    // adopt the current policy, while preserving unrelated keys (model, system, ...).
+    if (object.mode !== managed.mode) {
+      result = applyEdits(result, modify(result, ["agents", managed.id, "mode"], managed.mode, { formattingOptions: formatting }));
+      object.mode = managed.mode;
+    }
+    if (JSON.stringify(object.permissions) !== JSON.stringify(managed.permissions)) {
+      result = applyEdits(result, modify(result, ["agents", managed.id, "permissions"], managed.permissions, { formattingOptions: formatting }));
+      object.permissions = managed.permissions;
+    }
   }
   return result;
 }

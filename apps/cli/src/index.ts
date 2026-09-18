@@ -317,12 +317,14 @@ const needsConfig = command === "install" || command === "update" || command ===
   const creates = plan.operations.filter((item) => item.kind === "create").length;
   const replaces = plan.operations.filter((item) => item.kind === "replace").length;
   const unchanged = plan.operations.filter((item) => item.kind === "unchanged").length;
+  const removes = plan.operations.filter((item) => item.kind === "remove").length;
   p.note([
     `+ ${creates} new`,
     `~ ${replaces} updates`,
+    `- ${removes} removed`,
     `= ${unchanged} unchanged`,
     "",
-    ...plan.operations.map((item) => `${item.kind === "create" ? "+" : item.kind === "replace" ? "~" : "="} ${item.destination}`),
+    ...plan.operations.map((item) => `${item.kind === "create" ? "+" : item.kind === "replace" ? "~" : item.kind === "remove" ? "-" : "="} ${item.destination}`),
   ].join("\n"), "Your installation");
   if (plan.operations.some((item) => item.artifact.component === "plugins" && item.kind !== "unchanged")) p.log.warn("This installs executable OpenCode 2 plugin and hook code from the verified Skynex catalog.");
 

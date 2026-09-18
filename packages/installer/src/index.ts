@@ -15,7 +15,7 @@ export { createUninstallPlan } from "./uninstall.js";
 export { listBackups, restoreBackup } from "./backup-service.js";
 export { executeTransaction } from "./transaction.js";
 
-export interface InstallOperation { readonly kind: "create" | "replace" | "preserve" | "unchanged" | "conflict"; readonly artifact: DesiredArtifact; readonly relativePath: string; readonly destination: string; readonly currentDigest: string | null; readonly desiredDigest: string; readonly previous?: ManagedResourceState; readonly decision?: UpdateDecision; }
+export interface InstallOperation { readonly kind: "create" | "replace" | "preserve" | "unchanged" | "conflict" | "remove"; readonly artifact: DesiredArtifact; readonly relativePath: string; readonly destination: string; readonly currentDigest: string | null; readonly desiredDigest: string; readonly previous?: ManagedResourceState; readonly decision?: UpdateDecision; }
 export interface InstallPlan { readonly id: string; readonly createdAt: string; readonly target: TargetDetection; readonly operations: readonly InstallOperation[]; readonly allowedResources?: readonly { readonly id: string; readonly relativePath: string }[]; readonly selectedComponents?: readonly InstallComponent[]; readonly updateMode?: boolean; readonly expectedPreviousLockDigest?: string | null; }
 export interface ApplyResult { readonly transactionId: string; readonly changed: number; readonly backupRoot: string | null; readonly lockPath: string; }
 const sha256 = (content: string | Buffer): string => createHash("sha256").update(content).digest("hex");
@@ -32,6 +32,13 @@ const convergedResource = (resource: ManagedResourceState, item: InstallOperatio
   delete (converged as { pendingSourceDigest?: string; pendingVersion?: string }).pendingVersion;
   return converged;
 };
+
+const componentFor = (relativePath: string): InstallComponent =>
+  relativePath.startsWith("agents/") ? "agents"
+    : relativePath.startsWith("skills/") ? "skills"
+    : relativePath.startsWith("commands/") ? "commands"
+    : relativePath.startsWith("skynex/") ? "plugins"
+    : "configuration";
 
 export const createInstallPlan = async (target: TargetAdapter, roots: InstallRoots, components?: readonly InstallComponent[], options?: { readonly configPreference?: "json" | "jsonc" }): Promise<InstallPlan> => {
   const selected = components ?? (roots.scope === "project" ? ["configuration", "agents", "skills"] : ["configuration", "agents", "skills", "plugins"] satisfies InstallComponent[]);
@@ -59,6 +66,17 @@ export const createInstallPlan = async (target: TargetAdapter, roots: InstallRoo
     const unmanagedCollision = current !== null && !prior && !isSharedOpenCodeConfig(detection, artifact);
     operations.push({ artifact, relativePath: artifact.relativePath, currentDigest, desiredDigest, previous: prior, kind: unmanagedCollision ? "conflict" : !current ? "create" : currentDigest === desiredDigest ? "unchanged" : "replace", destination });
   }
+  // Resources a prior install owned that the catalog no longer ships (removed
+  // upstream) are removed instead of silently lingering, without touching any
+  // destination the catalog does not own.
+  const trustedPaths = new Set(trustedArtifacts.map((artifact) => artifact.relativePath));
+  for (const [relativePath, prior] of priorResources) {
+    if (trustedPaths.has(relativePath) || destinations.has(relativePath)) continue;
+    const destination = await assertSafeMutationTarget(roots.targetRoot, relativePath);
+    const current = await exists(destination) ? await readFile(destination) : null;
+    const currentDigest = current ? sha256(current) : null;
+    operations.push({ kind: "remove", artifact: { resource: prior, component: componentFor(relativePath), relativePath, content: "" }, relativePath, destination, currentDigest, desiredDigest: "" });
+  }
   const plan = { id: randomUUID(), createdAt: new Date().toISOString(), target: detection, operations, selectedComponents: selected, allowedResources: trustedArtifacts.map((artifact) => ({ id: artifact.resource.id, relativePath: artifact.relativePath })) };
   plannedCollisionPlans.set(plan, collisionAuthorization(plan));
   return plan;
@@ -79,7 +97,8 @@ export const applyInstallPlan = async (plan: InstallPlan): Promise<ApplyResult> 
   const installed = prior;
   const ownedOperations = plan.operations.filter((item) => item.kind !== "preserve");
   const planned = new Set(ownedOperations.map((item) => item.artifact.relativePath));
-  const resources = [...(prior?.resources ?? []).filter((resource) => !planned.has(resource.relativePath)), ...ownedOperations.map((item) => item.previous && item.kind === "unchanged" ? (item.currentDigest === item.desiredDigest ? convergedResource(item.previous, item) : item.previous) : ({ ...item.artifact.resource, origin: item.artifact.resource.kind === "native" ? "native" : "canonical", relativePath: item.relativePath, sourceDigest: item.desiredDigest, installedDigest: item.desiredDigest } as ManagedResourceState))];
+  const lockOperations = ownedOperations.filter((item) => item.kind !== "remove");
+  const resources = [...(prior?.resources ?? []).filter((resource) => !planned.has(resource.relativePath)), ...lockOperations.map((item) => item.previous && item.kind === "unchanged" ? (item.currentDigest === item.desiredDigest ? convergedResource(item.previous, item) : item.previous) : ({ ...item.artifact.resource, origin: item.artifact.resource.kind === "native" ? "native" : "canonical", relativePath: item.relativePath, sourceDigest: item.desiredDigest, installedDigest: item.desiredDigest } as ManagedResourceState))];
   const lock = { schemaVersion: 1 as const, target: "opencode-v2" as const, scope: roots.scope, targetRoot: resolve(roots.targetRoot), stateRoot: resolve(roots.stateRoot), installedAt: new Date().toISOString(), transactionId: plan.id, resources, installedComponents: plan.selectedComponents ?? [...new Set(plan.operations.map((operation) => operation.artifact.component))] } satisfies InstallLock;
   for (const item of plan.operations) {
     const owned = installed?.resources.find((resource) => resource.id === item.artifact.resource.id && resource.relativePath === item.relativePath);
@@ -116,6 +135,7 @@ export function prepareUpdatePlan(plan: InstallPlan, lock: InstallLock, choose?:
   const previous = new Map(lock.resources.map((resource) => [resource.relativePath, resource]));
   const operations = plan.operations.map((operation) => {
     const prior = previous.get(operation.relativePath);
+    if (operation.kind === "remove") return operation;
     if (!prior) return operation;
     if (operation.currentDigest === null) throw new Error(`Managed resource is missing: ${operation.relativePath}; restore it or uninstall before updating`);
     const upstreamChanged = operation.desiredDigest !== prior.sourceDigest;
