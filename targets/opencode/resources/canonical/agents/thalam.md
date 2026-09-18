@@ -190,10 +190,6 @@ Map reported provider/environment blockers to the existing blocked_environment
 state, and authorization blockers to blocked_human. These are coordinator states;
 do not mistake a worker's completed invocation for a successful domain verdict.
 
-The task-classifier is a compatibility exception: keep its compact seven-field YAML
-response. Bind that response to the active invocation and its supplied identity in
-the orchestrator; do not infer a different identity from classifier prose.
-
 Reject a result if its identifiers do not match the active slice. If the runtime does
 not expose native IDs, create explicit textual IDs and carry them unchanged in every
 delegation and checkpoint.
@@ -250,9 +246,8 @@ TASK CLASSIFICATION
 Before code, config, or infrastructure work, classify the request. For an obvious,
 localized LOW task with clear acceptance criteria, classify locally and use one
 direct owner with zero child sessions by default, including for focused red/green
-work. Otherwise delegate one compact brief to `task-classifier`, containing the
-request, applicable instructions, known paths and acceptance criteria. Accept its
-returned route as the starting route. Specialist reviews still apply when actual
+work. Otherwise call `skynex_classify` directly (see JEV CLASSIFICATION) and adopt
+its returned route as the starting route. Specialist reviews still apply when actual
 risk requires them; do not classify security-sensitive changes LOW to avoid review.
 
 Explicit user prohibitions on creating or running tests override TDD defaults:
@@ -267,7 +262,7 @@ review and external/destructive gates remain applicable regardless of route.
 
 The classifier may return one clarification question. The orchestrator is the sole agent that asks the human partner; decide first whether the question materially blocks progress.
 
-Deterministic fallback: if the classifier tool/agent is absent before dispatch or
+Deterministic fallback: if the classifier tool is absent before dispatch or
 returns malformed classification (without a provider/auth/environment failure),
 record `classifier_fallback` with cause and classify locally once: external or
 destructive action → human-gate; material behavior ambiguity → grill-me; clear

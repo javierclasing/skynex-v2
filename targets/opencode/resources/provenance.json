@@ -45,12 +45,6 @@
       "generatedSha256": "510d535cfb31e76fc8fdceeea74909e790b5d8f7e3ae4ac965e0f1030b85b73a"
     },
     {
-      "target": "canonical/agents/task-classifier.md",
-      "source": "agents/task-classifier.md",
-      "sourceSha256": "7ebea01e1a5189f8e512b786a35ab8360c43783294d578e811af050c8d6f71af",
-      "generatedSha256": "1b378e1bdde2cf38dbe56cfba88d05db09273f033001294d8b8756b92412c9b2"
-    },
-    {
       "target": "canonical/agents/tech-planner.md",
       "source": "agents/tech-planner.md",
       "sourceSha256": "0d47fd9ce841766ac60eedf1fa0496aca85bd18b28a7682d44f8325dec10eacd",
@@ -72,7 +66,7 @@
       "target": "canonical/agents/thalam.md",
       "source": "agents/skynex-orchestrator.md",
       "sourceSha256": "eb46ce33b0cdc5713b1d42a5f89eec4bd4182e0dbd31acb42d8eba25f5be6170",
-      "generatedSha256": "89982fea48fa82a36544725b8c9b9f7faf7e4fdf1ee9d34ddf32b8c2b8bf8b48"
+      "generatedSha256": "c8d96d6b442c0e53bc10600581f6bedefde9106954001150a2986cdd0db8f6ff"
     },
     {
       "target": "canonical/agents/verifier.md",
@@ -84,7 +78,7 @@
       "target": "canonical/config/managed-agents.json",
       "source": "generated",
       "sourceSha256": null,
-      "generatedSha256": "54549f3447c191d66545ffadca6aae8f6c6f009c48825f8776d0687d60a46a2a"
+      "generatedSha256": "6ea97a2c3082b16130118250d07b04077b99193d9b8b3e6739db2e7f6c086faa"
     },
     {
       "target": "canonical/skills/_shared/advisor-protocol.md",
@@ -265,16 +259,16 @@
     {
       "target": "native/plugins/sky-agents/tui.tsx",
       "source": "native/plugins/sky-agents/tui.tsx",
-      "sourceSha256": "6d9bd3448709d4054ba4552a95e642836200fb3236804513806f4e7f4934edb6",
-      "generatedSha256": "6d9bd3448709d4054ba4552a95e642836200fb3236804513806f4e7f4934edb6",
+      "sourceSha256": "974d027b5198a4b5664054f862e7cdbdab903dd947acf88fd91fe84b72e1beb4",
+      "generatedSha256": "974d027b5198a4b5664054f862e7cdbdab903dd947acf88fd91fe84b72e1beb4",
       "transformation": "v2-adaptation",
       "sourceReferences": []
     },
     {
       "target": "native/plugins/sky-agents/rpc.ts",
       "source": "native/plugins/sky-agents/rpc.ts",
-      "sourceSha256": "1d813a7707c038068c0b3347a3aed2c646d3b98afe278de7df7423daeaedc009",
-      "generatedSha256": "1d813a7707c038068c0b3347a3aed2c646d3b98afe278de7df7423daeaedc009",
+      "sourceSha256": "3fbdb8ee3eb99c92bfb2a61cbecd8c49ad8ce74f315ac5cfc3fd3640fe0c4304",
+      "generatedSha256": "3fbdb8ee3eb99c92bfb2a61cbecd8c49ad8ce74f315ac5cfc3fd3640fe0c4304",
       "transformation": "v2-adaptation",
       "sourceReferences": []
     },
@@ -472,13 +466,13 @@
     {
       "target": "native/plugins/sky-agents/core/profiles.ts",
       "source": "packages/sky-agents/src/profiles.ts",
-      "sourceSha256": "7916fafac31dd7a99267a2e186c3f0d12124564d231ebfab4b31174960076624",
-      "generatedSha256": "7916fafac31dd7a99267a2e186c3f0d12124564d231ebfab4b31174960076624",
+      "sourceSha256": "49c0216749299a8ab2105ce2f003671507c6b44f8308c74999f7d9e871482068",
+      "generatedSha256": "49c0216749299a8ab2105ce2f003671507c6b44f8308c74999f7d9e871482068",
       "transformation": "v2-adaptation",
       "sourceReferences": [
         {
           "path": "packages/sky-agents/src/profiles.ts",
-          "sha256": "7916fafac31dd7a99267a2e186c3f0d12124564d231ebfab4b31174960076624"
+          "sha256": "49c0216749299a8ab2105ce2f003671507c6b44f8308c74999f7d9e871482068"
         }
       ]
     },
@@ -498,13 +492,13 @@
     {
       "target": "native/plugins/sky-agents/core/rpc.ts",
       "source": "packages/sky-agents/src/rpc.ts",
-      "sourceSha256": "3737fecef45d39be1de7302360d90bb8cbcb55e5741b224a8696c698eed28e29",
-      "generatedSha256": "3737fecef45d39be1de7302360d90bb8cbcb55e5741b224a8696c698eed28e29",
+      "sourceSha256": "4a4db8cfe66514fa41c85daeb1196ab86baa3bcc046afac1a4eb15ca93239bcc",
+      "generatedSha256": "4a4db8cfe66514fa41c85daeb1196ab86baa3bcc046afac1a4eb15ca93239bcc",
       "transformation": "v2-adaptation",
       "sourceReferences": [
         {
           "path": "packages/sky-agents/src/rpc.ts",
-          "sha256": "3737fecef45d39be1de7302360d90bb8cbcb55e5741b224a8696c698eed28e29"
+          "sha256": "4a4db8cfe66514fa41c85daeb1196ab86baa3bcc046afac1a4eb15ca93239bcc"
         }
       ]
     },

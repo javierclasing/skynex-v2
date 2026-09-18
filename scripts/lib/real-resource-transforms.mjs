@@ -12,7 +12,6 @@ const descriptions = {
   security: "Reviews code for concrete security vulnerabilities",
   "skill-validator": "Validates implementation against project skills and conventions",
   thalam: "Coordinates work with small, explicit scopes",
-  "task-classifier": "Classifies requests for the orchestrator",
   "tech-planner": "Produces prescriptive implementation plans",
   "test-engineer": "Writes behavior-focused red test contracts",
   "test-reviewer": "Reviews test contracts for coherence and quality",
@@ -141,9 +140,6 @@ no TypeSafe access, fall back to the deterministic local classification above, r
 `;
 
 export function transformAgent(name, body) {
-  if (name === "task-classifier") {
-    return body.replace(/\n*## JEV CLASSIFICATION\n[\s\S]*?(?=\n## ROUTING RULES\n)/, "");
-  }
   if (name === "thalam") {
     const anchor = "\nEXECUTION FLOW\n";
     if (!body.includes(anchor)) throw new Error("thalam execution-flow anchor mismatch");
