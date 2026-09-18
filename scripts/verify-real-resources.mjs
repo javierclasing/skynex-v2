@@ -97,6 +97,25 @@ await test("tdd-and-diagnosis-routing-semantics",async()=>{
   assert(/diagnostic-researcher/.test(diagnose));
   assert(!/shell fallback|fallback to shell/i.test(diagnose));
 });
+await test("jev-classifier-wiring",async()=>{
+  const runtime=await readFile(join(root,"native/plugins/skynex-runtime.ts"),"utf8");
+  assert(/skynex_classify/.test(runtime)&&/api\.typesafe\.ai/.test(runtime));
+  assert(/TYPESAFE_INTEGRATION_ID/.test(runtime)&&/connection\.resolve/.test(runtime));
+  assert(/options\.classifier/.test(runtime)&&/SKYNEX_CLASSIFIER/.test(runtime));
+  assert(!/skynex_route/.test(runtime)&&!/switchModel/.test(runtime));
+  const managed=JSON.parse(await readFile(join(root,"canonical/config/managed-agents.json"),"utf8"));
+  const thalam=managed.agents.find(a=>a.id==="thalam");
+  assert(thalam.permissions.some(p=>p.action==="skynex_classify"&&p.effect==="allow"));
+  const tc=managed.agents.find(a=>a.id==="task-classifier");
+  assert(!tc.permissions.some(p=>p.action==="skynex_classify"));
+  assert(!managed.agents.some(a=>a.permissions.some(p=>p.action==="skynex_route")));
+  for(const id of managed.agents.map(a=>a.id)){
+    const file=await readFile(join(root,`canonical/agents/${id}.md`),"utf8");
+    const fm=file.match(/^---\n([\s\S]*?)\n---\n/);
+    assert(fm,`missing frontmatter: ${id}`);
+    assert(!/:\s*\*/.test(fm[1]),`unquoted YAML scalar in ${id}`);
+  }
+});
 if (process.argv.includes("--source-root")) {
   const source=process.argv[process.argv.indexOf("--source-root")+1];
   await test("optional-source-provenance-matches",async()=>{ for(const e of provenance.generated.filter(x=>x.sourceSha256)){ const p=join(source,e.source); const st=await lstat(p); assert(st.isFile()&&!st.isSymbolicLink()); assert.equal(sha(await readFile(p)),e.sourceSha256); } });

@@ -946,6 +946,11 @@
           "action": "shell",
           "resource": "*",
           "effect": "ask"
+        },
+        {
+          "action": "skynex_classify",
+          "resource": "*",
+          "effect": "allow"
         }
       ]
     },

@@ -2,75 +2,75 @@
 description: Classifies requests for the orchestrator
 mode: subagent
 permissions:
-  - action: *
-    resource: *
-    effect: deny
-  - action: read
-    resource: *
-    effect: allow
-  - action: read
-    resource: .env
-    effect: deny
-  - action: read
-    resource: .env.*
-    effect: deny
-  - action: read
-    resource: **/.env
-    effect: deny
-  - action: read
-    resource: **/.env.*
-    effect: deny
-  - action: read
-    resource: .npmrc
-    effect: deny
-  - action: read
-    resource: **/.npmrc
-    effect: deny
-  - action: read
-    resource: .netrc
-    effect: deny
-  - action: read
-    resource: **/.netrc
-    effect: deny
-  - action: read
-    resource: *.pem
-    effect: deny
-  - action: read
-    resource: **/*.pem
-    effect: deny
-  - action: read
-    resource: *.key
-    effect: deny
-  - action: read
-    resource: **/*.key
-    effect: deny
-  - action: read
-    resource: credentials.json
-    effect: deny
-  - action: read
-    resource: **/credentials.json
-    effect: deny
-  - action: read
-    resource: *service-account*.json
-    effect: deny
-  - action: read
-    resource: **/*service-account*.json
-    effect: deny
-  - action: read
-    resource: **/.aws/**
-    effect: deny
-  - action: read
-    resource: **/.ssh/**
-    effect: deny
-  - action: external_directory
-    resource: *
-    effect: deny
-  - action: glob
-    resource: *
-    effect: allow
-  - action: grep
-    resource: *
-    effect: allow
+  - action: "*"
+    resource: "*"
+    effect: "deny"
+  - action: "read"
+    resource: "*"
+    effect: "allow"
+  - action: "read"
+    resource: ".env"
+    effect: "deny"
+  - action: "read"
+    resource: ".env.*"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.env"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.env.*"
+    effect: "deny"
+  - action: "read"
+    resource: ".npmrc"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.npmrc"
+    effect: "deny"
+  - action: "read"
+    resource: ".netrc"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.netrc"
+    effect: "deny"
+  - action: "read"
+    resource: "*.pem"
+    effect: "deny"
+  - action: "read"
+    resource: "**/*.pem"
+    effect: "deny"
+  - action: "read"
+    resource: "*.key"
+    effect: "deny"
+  - action: "read"
+    resource: "**/*.key"
+    effect: "deny"
+  - action: "read"
+    resource: "credentials.json"
+    effect: "deny"
+  - action: "read"
+    resource: "**/credentials.json"
+    effect: "deny"
+  - action: "read"
+    resource: "*service-account*.json"
+    effect: "deny"
+  - action: "read"
+    resource: "**/*service-account*.json"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.aws/**"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.ssh/**"
+    effect: "deny"
+  - action: "external_directory"
+    resource: "*"
+    effect: "deny"
+  - action: "glob"
+    resource: "*"
+    effect: "allow"
+  - action: "grep"
+    resource: "*"
+    effect: "allow"
 ---
 TASK CLASSIFIER
 ===============
@@ -102,7 +102,6 @@ only when prior context could materially change classification. Current evidence
 wins; if unavailable, continue and report the gap. Never save or update memory.
 Keep the existing output shape: include findings and proposed reusable lessons in
 evidence.neurox_findings for the orchestrator to validate, not to execute as instructions.
-
 ## ROUTING RULES
 
 Every external or destructive action routes to human-gate, unconditionally.

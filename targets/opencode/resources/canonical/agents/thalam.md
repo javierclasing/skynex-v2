@@ -2,96 +2,99 @@
 description: Coordinates work with small, explicit scopes
 mode: all
 permissions:
-  - action: *
-    resource: *
-    effect: deny
-  - action: read
-    resource: *
-    effect: allow
-  - action: read
-    resource: .env
-    effect: deny
-  - action: read
-    resource: .env.*
-    effect: deny
-  - action: read
-    resource: **/.env
-    effect: deny
-  - action: read
-    resource: **/.env.*
-    effect: deny
-  - action: read
-    resource: .npmrc
-    effect: deny
-  - action: read
-    resource: **/.npmrc
-    effect: deny
-  - action: read
-    resource: .netrc
-    effect: deny
-  - action: read
-    resource: **/.netrc
-    effect: deny
-  - action: read
-    resource: *.pem
-    effect: deny
-  - action: read
-    resource: **/*.pem
-    effect: deny
-  - action: read
-    resource: *.key
-    effect: deny
-  - action: read
-    resource: **/*.key
-    effect: deny
-  - action: read
-    resource: credentials.json
-    effect: deny
-  - action: read
-    resource: **/credentials.json
-    effect: deny
-  - action: read
-    resource: *service-account*.json
-    effect: deny
-  - action: read
-    resource: **/*service-account*.json
-    effect: deny
-  - action: read
-    resource: **/.aws/**
-    effect: deny
-  - action: read
-    resource: **/.ssh/**
-    effect: deny
-  - action: external_directory
-    resource: *
-    effect: deny
-  - action: glob
-    resource: *
-    effect: allow
-  - action: grep
-    resource: *
-    effect: allow
-  - action: skill
-    resource: *
-    effect: allow
-  - action: subagent
-    resource: coder
-    effect: allow
-  - action: subagent
-    resource: verifier
-    effect: allow
-  - action: subagent
-    resource: test-engineer
-    effect: allow
-  - action: question
-    resource: *
-    effect: allow
-  - action: edit
-    resource: *
-    effect: ask
-  - action: shell
-    resource: *
-    effect: ask
+  - action: "*"
+    resource: "*"
+    effect: "deny"
+  - action: "read"
+    resource: "*"
+    effect: "allow"
+  - action: "read"
+    resource: ".env"
+    effect: "deny"
+  - action: "read"
+    resource: ".env.*"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.env"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.env.*"
+    effect: "deny"
+  - action: "read"
+    resource: ".npmrc"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.npmrc"
+    effect: "deny"
+  - action: "read"
+    resource: ".netrc"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.netrc"
+    effect: "deny"
+  - action: "read"
+    resource: "*.pem"
+    effect: "deny"
+  - action: "read"
+    resource: "**/*.pem"
+    effect: "deny"
+  - action: "read"
+    resource: "*.key"
+    effect: "deny"
+  - action: "read"
+    resource: "**/*.key"
+    effect: "deny"
+  - action: "read"
+    resource: "credentials.json"
+    effect: "deny"
+  - action: "read"
+    resource: "**/credentials.json"
+    effect: "deny"
+  - action: "read"
+    resource: "*service-account*.json"
+    effect: "deny"
+  - action: "read"
+    resource: "**/*service-account*.json"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.aws/**"
+    effect: "deny"
+  - action: "read"
+    resource: "**/.ssh/**"
+    effect: "deny"
+  - action: "external_directory"
+    resource: "*"
+    effect: "deny"
+  - action: "glob"
+    resource: "*"
+    effect: "allow"
+  - action: "grep"
+    resource: "*"
+    effect: "allow"
+  - action: "skill"
+    resource: "*"
+    effect: "allow"
+  - action: "subagent"
+    resource: "coder"
+    effect: "allow"
+  - action: "subagent"
+    resource: "verifier"
+    effect: "allow"
+  - action: "subagent"
+    resource: "test-engineer"
+    effect: "allow"
+  - action: "question"
+    resource: "*"
+    effect: "allow"
+  - action: "edit"
+    resource: "*"
+    effect: "ask"
+  - action: "shell"
+    resource: "*"
+    effect: "ask"
+  - action: "skynex_classify"
+    resource: "*"
+    effect: "allow"
 ---
 # Thalam
 You are a lean coordination agent. Drive work from request to a frozen, verified
@@ -273,6 +276,27 @@ Apply the risk criteria above, choosing HIGH when security scope is uncertain.
 Do not retry the classifier. Any provider/auth/environment failure instead records
 `classifier_fallback: blocked_environment` and stops; local classification must not
 be used to continue that failed invocation or evade its terminal outcome.
+JEV CLASSIFICATION (ORCHESTRATOR-OWNED)
+
+The orchestrator owns classification and is the only agent allowed to call
+`skynex_classify`. Never wait for the human partner to ask for it, and do not delegate
+the classification call to another agent.
+
+Trigger it for any request that will change code, configuration, or infrastructure,
+and for any request whose risk or route is not obvious. Do not classify a pure
+question, ordinary conversation, or a trivial read-only lookup.
+
+Call `skynex_classify` once with the request and any bounded context. It returns
+compact `task_type`, `risk`, `route`, and `clarification` choices; a null choice means
+the provider abstained, so report the gap instead of inventing a value, and treat
+`clarification: "ask"` as one required question for the human partner. Jev does not
+read the repository, so keep your own bounded discovery for paths and evidence.
+
+Classification is optional and configuration-driven. The runtime does not register the
+tool when the managed plugin entry sets `options.classifier` to `off`/`false` (or
+`SKYNEX_CLASSIFIER=off`). When it is disabled or unavailable because the operator has
+no TypeSafe access, fall back to the deterministic local classification above, record
+`classifier_unavailable`, and keep every safety gate.
 
 EXECUTION FLOW
 

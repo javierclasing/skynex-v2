@@ -35,6 +35,9 @@ const readOnly = [
   { action: "glob", resource: "*", effect: "allow" },
   { action: "grep", resource: "*", effect: "allow" },
 ];
+const skynexTools = [
+  { action: "skynex_classify", resource: "*", effect: "allow" },
+];
 const diagnostic = [
   { action: "*", resource: "*", effect: "deny" },
   { action: "diagnostic_read", resource: "*", effect: "allow" },
@@ -100,6 +103,7 @@ const orchestrator = [
   { action: "question", resource: "*", effect: "allow" },
   { action: "edit", resource: "*", effect: "ask" },
   { action: "shell", resource: "*", effect: "ask" },
+  ...skynexTools,
 ];
 const policy = (name) => {
   if (name === "coder") return coder;
@@ -112,11 +116,49 @@ const policy = (name) => {
   return readOnly;
 };
 
+const thalamClassifyMarker = "JEV CLASSIFICATION (ORCHESTRATOR-OWNED)";
+const thalamClassifySection = `${thalamClassifyMarker}
+
+The orchestrator owns classification and is the only agent allowed to call
+\`skynex_classify\`. Never wait for the human partner to ask for it, and do not delegate
+the classification call to another agent.
+
+Trigger it for any request that will change code, configuration, or infrastructure,
+and for any request whose risk or route is not obvious. Do not classify a pure
+question, ordinary conversation, or a trivial read-only lookup.
+
+Call \`skynex_classify\` once with the request and any bounded context. It returns
+compact \`task_type\`, \`risk\`, \`route\`, and \`clarification\` choices; a null choice means
+the provider abstained, so report the gap instead of inventing a value, and treat
+\`clarification: "ask"\` as one required question for the human partner. Jev does not
+read the repository, so keep your own bounded discovery for paths and evidence.
+
+Classification is optional and configuration-driven. The runtime does not register the
+tool when the managed plugin entry sets \`options.classifier\` to \`off\`/\`false\` (or
+\`SKYNEX_CLASSIFIER=off\`). When it is disabled or unavailable because the operator has
+no TypeSafe access, fall back to the deterministic local classification above, record
+\`classifier_unavailable\`, and keep every safety gate.
+`;
+
+export function transformAgent(name, body) {
+  if (name === "task-classifier") {
+    return body.replace(/\n*## JEV CLASSIFICATION\n[\s\S]*?(?=\n## ROUTING RULES\n)/, "");
+  }
+  if (name === "thalam") {
+    const anchor = "\nEXECUTION FLOW\n";
+    if (!body.includes(anchor)) throw new Error("thalam execution-flow anchor mismatch");
+    const current = body.replace(/\n*(?:JEV CLASSIFICATION AND MODEL ROUTING \(ORCHESTRATOR-OWNED\)|JEV CLASSIFICATION \(ORCHESTRATOR-OWNED\)|JEV MODEL ROUTING)\n[\s\S]*?(?=\nEXECUTION FLOW\n)/, "");
+    return current.replace(anchor, `\n${thalamClassifySection}${anchor}`);
+  }
+  return body;
+}
+
 export function normalizeAgent(name, source) {
   const body = source.replace(/^---\n[\s\S]*?\n---\n\n?/, "");
   const mode = name === "thalam" ? "all" : "subagent";
-  const frontmatter = ["---", `description: ${descriptions[name] ?? `OpenCode ${name} agent`}`, `mode: ${mode}`, "permissions:", ...policy(name).map((item) => `  - action: ${item.action}\n    resource: ${item.resource}\n    effect: ${item.effect}`), "---", ""].join("\n");
-  return frontmatter + (name === "thalam" ? body.replace(/^SKYNEX ORCHESTRATOR[^\n]*\n=+\s*$/m, "# Thalam") : body);
+  const frontmatter = ["---", `description: ${descriptions[name] ?? `OpenCode ${name} agent`}`, `mode: ${mode}`, "permissions:", ...policy(name).map((item) => `  - action: "${item.action}"\n    resource: "${item.resource}"\n    effect: "${item.effect}"`), "---", ""].join("\n");
+  const resolved = name === "thalam" ? body.replace(/^SKYNEX ORCHESTRATOR[^\n]*\n=+\s*$/m, "# Thalam") : body;
+  return frontmatter + transformAgent(name, resolved);
 }
 
 export function managedAgents(agentNames) {
