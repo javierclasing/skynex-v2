@@ -79,6 +79,20 @@
       ]
     },
     {
+      "id": "agents.scout",
+      "kind": "agent",
+      "version": "0.1.0",
+      "origin": "canonical",
+      "sourcePath": "canonical/agents/scout.md",
+      "component": "agents",
+      "targets": [
+        {
+          "id": "opencode-v2",
+          "relativePath": "agents/scout.md"
+        }
+      ]
+    },
+    {
       "id": "agents.security",
       "kind": "agent",
       "version": "0.1.0",

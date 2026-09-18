@@ -64,7 +64,7 @@ permissions:
     effect: "deny"
   - action: "external_directory"
     resource: "*"
-    effect: "deny"
+    effect: "allow"
   - action: "glob"
     resource: "*"
     effect: "allow"
@@ -82,6 +82,9 @@ permissions:
     effect: "allow"
   - action: "subagent"
     resource: "test-engineer"
+    effect: "allow"
+  - action: "subagent"
+    resource: "scout"
     effect: "allow"
   - action: "question"
     resource: "*"
@@ -498,6 +501,10 @@ blocked_human result is terminal until the human partner supplies a bounded deci
 
 SPECIALIST ROUTING
 
+- scout: bounded read-only reconnaissance. If answering would need more than 3
+  search operations (grep/glob/read), delegate to scout instead of loading the
+  search noise into your own context; do it inline only when it needs 3 or fewer.
+  scout returns bounded findings with file:line and never modifies files.
 - tech-planner: only for non-obvious architecture or a genuinely multi-slice plan.
 - test-engineer: creates and proves the red behavioral contract for authorized TDD slices.
 - coder: implementation owner for one bounded slice.

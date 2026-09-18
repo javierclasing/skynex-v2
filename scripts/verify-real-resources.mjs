@@ -25,7 +25,7 @@ const manifest = JSON.parse(await readFile(join(root, "manifest.json")));
 const provenance = JSON.parse(await readFile(join(root, "provenance.json")));
 await test("catalog-exact-agent-and-skill-inventory", async () => {
   const agents = manifest.resources.filter(x => x.kind === "agent");
-  assert.equal(agents.length, 12); assert(agents.some(x => x.id.endsWith("mentor")));
+  assert.equal(agents.length, 13); assert(agents.some(x => x.id.endsWith("mentor")));
   assert(agents.some(x => x.id === "agents.thalam" && x.sourcePath === "canonical/agents/thalam.md" && x.targets.some(t => t.relativePath === "agents/thalam.md")));
   assert(!agents.some(x => /skynex-orchestrator/.test(`${x.id} ${x.sourcePath} ${JSON.stringify(x.targets)}`)));
   assert(!agents.some(x => /advisor|manager|linear/.test(x.id)));
@@ -40,7 +40,7 @@ await test("catalog-every-leaf-owned-and-digested", async () => {
   await walk(join(root,"canonical"),"canonical"); await walk(join(root,"native"),"native");
 });
 await test("provenance-hashes-and-portability", async () => {
-  assert.equal(provenance.generated.length, 58);
+  assert.equal(provenance.generated.length, 59);
   for (const e of provenance.generated) { assert(!e.source.startsWith("/")); assert(!e.target.startsWith("/")); assert.equal(sha(await readFile(join(root,e.target))),e.generatedSha256); }
   assert(!JSON.stringify(provenance).includes("/home/"));
 });
@@ -67,7 +67,7 @@ await test("native-sky-agents-imports-are-runtime-relative", async () => {
 });
 await test("managed-config-safe-values", async () => {
   const c=JSON.parse(await readFile(join(root,"canonical/config/managed-agents.json")));
-  assert.equal(c.agents.length,12); const thalam=c.agents.find(a=>a.id==="thalam"); assert(thalam); assert(!c.agents.some(a=>a.id==="skynex-orchestrator")); assert.equal(thalam.mode,"all"); assert(!/(model|provider|mcp)/i.test(JSON.stringify(c)));
+  assert.equal(c.agents.length,13); const thalam=c.agents.find(a=>a.id==="thalam"); assert(thalam); assert(!c.agents.some(a=>a.id==="skynex-orchestrator")); assert.equal(thalam.mode,"all"); assert(!/(model|provider|mcp)/i.test(JSON.stringify(c)));
   for(const a of c.agents){ assert.equal(a.permissions[0].effect,"ask"); assert(["all","subagent"].includes(a.mode)); }
   const sensitive=[".env",".env.*","**/.env","**/.env.*",".npmrc","**/.npmrc",".netrc","**/.netrc","*.pem","**/*.pem","*.key","**/*.key","credentials.json","**/credentials.json","*service-account*.json","**/*service-account*.json","**/.aws/**","**/.ssh/**"];
   for(const a of c.agents.filter(a=>a.permissions.some(p=>p.action==="read"&&p.effect==="allow"))){const allow=a.permissions.findIndex(p=>p.action==="read"&&p.resource==="*"&&p.effect==="allow");for(const resource of sensitive){const deny=a.permissions.findIndex(p=>p.action==="read"&&p.resource===resource&&p.effect==="deny");assert(deny>allow,`missing or misordered sensitive read deny: ${resource}`)}}
@@ -85,9 +85,9 @@ await test("resources-have-no-placeholders-or-commands", async () => {
 });
 await test("catalog-exact-category-counts",async()=>{
   const counts=Object.fromEntries(["agent","skill","configuration","native","hook","mcp","command"].map(k=>[k,manifest.resources.filter(x=>x.kind===k).length]));
-  assert.deepEqual(counts,{agent:12,skill:24,configuration:1,native:20,hook:1,mcp:0,command:0});
+  assert.deepEqual(counts,{agent:13,skill:24,configuration:1,native:20,hook:1,mcp:0,command:0});
   assert.equal(counts.native+counts.hook,21);
-  assert.equal(manifest.resources.length,58);
+  assert.equal(manifest.resources.length,59);
 });
 await test("tdd-and-diagnosis-routing-semantics",async()=>{
   const tdd=await readFile(join(root,"canonical/skills/tdd-discipline/SKILL.md"),"utf8");

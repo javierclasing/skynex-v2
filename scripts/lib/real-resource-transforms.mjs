@@ -9,6 +9,7 @@ const descriptions = {
   "infrastructure-engineer": "Maintains bounded infrastructure and developer tooling",
   mentor: "Provides practical, gradual Spanish-language mentoring",
   "pr-reviewer": "Reviews one adversarial code-quality dimension",
+  scout: "Scouts codebases for bounded, evidence-backed findings",
   security: "Reviews code for concrete security vulnerabilities",
   "skill-validator": "Validates implementation against project skills and conventions",
   thalam: "Coordinates work with small, explicit scopes",
@@ -30,9 +31,14 @@ const allowRead = [{ action: "read", resource: "*", effect: "allow" }, ...sensit
 const readOnly = [
   { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
-  { action: "external_directory", resource: "*", effect: "deny" },
+  { action: "external_directory", resource: "*", effect: "allow" },
   { action: "glob", resource: "*", effect: "allow" },
   { action: "grep", resource: "*", effect: "allow" },
+];
+const scout = [
+  ...readOnly,
+  { action: "subagent", resource: "*", effect: "deny" },
+  { action: "question", resource: "*", effect: "deny" },
 ];
 const skynexTools = [
   { action: "skynex_classify", resource: "*", effect: "allow" },
@@ -46,7 +52,7 @@ const diagnostic = [
 const coder = [
   { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
-  { action: "external_directory", resource: "*", effect: "deny" },
+  { action: "external_directory", resource: "*", effect: "allow" },
   { action: "glob", resource: "*", effect: "allow" },
   { action: "grep", resource: "*", effect: "allow" },
   { action: "edit", resource: "*", effect: "allow" },
@@ -57,7 +63,7 @@ const coder = [
 const infrastructure = [
   { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
-  { action: "external_directory", resource: "*", effect: "deny" },
+  { action: "external_directory", resource: "*", effect: "allow" },
   { action: "glob", resource: "*", effect: "allow" },
   { action: "grep", resource: "*", effect: "allow" },
   { action: "edit", resource: "*", effect: "allow" },
@@ -66,7 +72,7 @@ const infrastructure = [
 const testEngineer = [
   { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
-  { action: "external_directory", resource: "*", effect: "deny" },
+  { action: "external_directory", resource: "*", effect: "allow" },
   { action: "glob", resource: "*", effect: "allow" },
   { action: "grep", resource: "*", effect: "allow" },
   { action: "edit", resource: "*", effect: "allow" },
@@ -75,7 +81,7 @@ const testEngineer = [
 const techPlanner = [
   { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
-  { action: "external_directory", resource: "*", effect: "deny" },
+  { action: "external_directory", resource: "*", effect: "allow" },
   { action: "glob", resource: "*", effect: "allow" },
   { action: "grep", resource: "*", effect: "allow" },
   { action: "edit", resource: "*", effect: "ask" },
@@ -83,7 +89,7 @@ const techPlanner = [
 const mentor = [
   { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
-  { action: "external_directory", resource: "*", effect: "deny" },
+  { action: "external_directory", resource: "*", effect: "allow" },
   { action: "glob", resource: "*", effect: "allow" },
   { action: "grep", resource: "*", effect: "allow" },
   { action: "subagent", resource: "coder", effect: "allow" },
@@ -92,13 +98,14 @@ const mentor = [
 const orchestrator = [
   { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
-  { action: "external_directory", resource: "*", effect: "deny" },
+  { action: "external_directory", resource: "*", effect: "allow" },
   { action: "glob", resource: "*", effect: "allow" },
   { action: "grep", resource: "*", effect: "allow" },
   { action: "skill", resource: "*", effect: "allow" },
   { action: "subagent", resource: "coder", effect: "allow" },
   { action: "subagent", resource: "verifier", effect: "allow" },
   { action: "subagent", resource: "test-engineer", effect: "allow" },
+  { action: "subagent", resource: "scout", effect: "allow" },
   { action: "question", resource: "*", effect: "allow" },
   { action: "edit", resource: "*", effect: "ask" },
   { action: "shell", resource: "*", effect: "ask" },
@@ -111,6 +118,7 @@ const policy = (name) => {
   if (name === "test-engineer") return testEngineer;
   if (name === "tech-planner") return techPlanner;
   if (name === "mentor") return mentor;
+  if (name === "scout") return scout;
   if (name === "thalam") return orchestrator;
   return readOnly;
 };
