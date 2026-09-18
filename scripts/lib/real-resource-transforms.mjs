@@ -28,7 +28,7 @@ const sensitiveReadDenies = [
 ].map((resource) => ({ action: "read", resource, effect: "deny" }));
 const allowRead = [{ action: "read", resource: "*", effect: "allow" }, ...sensitiveReadDenies];
 const readOnly = [
-  { action: "*", resource: "*", effect: "deny" },
+  { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
   { action: "external_directory", resource: "*", effect: "deny" },
   { action: "glob", resource: "*", effect: "allow" },
@@ -38,13 +38,13 @@ const skynexTools = [
   { action: "skynex_classify", resource: "*", effect: "allow" },
 ];
 const diagnostic = [
-  { action: "*", resource: "*", effect: "deny" },
+  { action: "*", resource: "*", effect: "ask" },
   { action: "diagnostic_read", resource: "*", effect: "allow" },
   { action: "diagnostic_glob", resource: "*", effect: "allow" },
   { action: "diagnostic_grep", resource: "*", effect: "allow" },
 ];
 const coder = [
-  { action: "*", resource: "*", effect: "deny" },
+  { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
   { action: "external_directory", resource: "*", effect: "deny" },
   { action: "glob", resource: "*", effect: "allow" },
@@ -55,7 +55,7 @@ const coder = [
   { action: "question", resource: "*", effect: "deny" },
 ];
 const infrastructure = [
-  { action: "*", resource: "*", effect: "deny" },
+  { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
   { action: "external_directory", resource: "*", effect: "deny" },
   { action: "glob", resource: "*", effect: "allow" },
@@ -64,7 +64,7 @@ const infrastructure = [
   { action: "shell", resource: "*", effect: "ask" },
 ];
 const testEngineer = [
-  { action: "*", resource: "*", effect: "deny" },
+  { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
   { action: "external_directory", resource: "*", effect: "deny" },
   { action: "glob", resource: "*", effect: "allow" },
@@ -73,7 +73,7 @@ const testEngineer = [
   { action: "shell", resource: "*", effect: "ask" },
 ];
 const techPlanner = [
-  { action: "*", resource: "*", effect: "deny" },
+  { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
   { action: "external_directory", resource: "*", effect: "deny" },
   { action: "glob", resource: "*", effect: "allow" },
@@ -81,7 +81,7 @@ const techPlanner = [
   { action: "edit", resource: "*", effect: "ask" },
 ];
 const mentor = [
-  { action: "*", resource: "*", effect: "deny" },
+  { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
   { action: "external_directory", resource: "*", effect: "deny" },
   { action: "glob", resource: "*", effect: "allow" },
@@ -90,7 +90,7 @@ const mentor = [
   { action: "question", resource: "*", effect: "deny" },
 ];
 const orchestrator = [
-  { action: "*", resource: "*", effect: "deny" },
+  { action: "*", resource: "*", effect: "ask" },
   ...allowRead,
   { action: "external_directory", resource: "*", effect: "deny" },
   { action: "glob", resource: "*", effect: "allow" },

@@ -4,7 +4,7 @@ mode: subagent
 permissions:
   - action: "*"
     resource: "*"
-    effect: "deny"
+    effect: "ask"
   - action: "diagnostic_read"
     resource: "*"
     effect: "allow"

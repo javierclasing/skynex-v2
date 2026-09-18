@@ -68,7 +68,7 @@ await test("native-sky-agents-imports-are-runtime-relative", async () => {
 await test("managed-config-safe-values", async () => {
   const c=JSON.parse(await readFile(join(root,"canonical/config/managed-agents.json")));
   assert.equal(c.agents.length,12); const thalam=c.agents.find(a=>a.id==="thalam"); assert(thalam); assert(!c.agents.some(a=>a.id==="skynex-orchestrator")); assert.equal(thalam.mode,"all"); assert(!/(model|provider|mcp)/i.test(JSON.stringify(c)));
-  for(const a of c.agents){ assert.equal(a.permissions[0].effect,"deny"); assert(["all","subagent"].includes(a.mode)); }
+  for(const a of c.agents){ assert.equal(a.permissions[0].effect,"ask"); assert(["all","subagent"].includes(a.mode)); }
   const sensitive=[".env",".env.*","**/.env","**/.env.*",".npmrc","**/.npmrc",".netrc","**/.netrc","*.pem","**/*.pem","*.key","**/*.key","credentials.json","**/credentials.json","*service-account*.json","**/*service-account*.json","**/.aws/**","**/.ssh/**"];
   for(const a of c.agents.filter(a=>a.permissions.some(p=>p.action==="read"&&p.effect==="allow"))){const allow=a.permissions.findIndex(p=>p.action==="read"&&p.resource==="*"&&p.effect==="allow");for(const resource of sensitive){const deny=a.permissions.findIndex(p=>p.action==="read"&&p.resource===resource&&p.effect==="deny");assert(deny>allow,`missing or misordered sensitive read deny: ${resource}`)}}
 });

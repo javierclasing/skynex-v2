@@ -4,7 +4,7 @@ mode: all
 permissions:
   - action: "*"
     resource: "*"
-    effect: "deny"
+    effect: "ask"
   - action: "read"
     resource: "*"
     effect: "allow"

@@ -8,7 +8,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "read",
@@ -149,7 +149,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "diagnostic_read",
@@ -175,7 +175,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "read",
@@ -306,7 +306,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "read",
@@ -437,7 +437,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "read",
@@ -558,7 +558,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "read",
@@ -679,7 +679,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "read",
@@ -800,7 +800,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "read",
@@ -961,7 +961,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "read",
@@ -1087,7 +1087,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "read",
@@ -1218,7 +1218,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "read",
@@ -1339,7 +1339,7 @@
         {
           "action": "*",
           "resource": "*",
-          "effect": "deny"
+          "effect": "ask"
         },
         {
           "action": "read",
