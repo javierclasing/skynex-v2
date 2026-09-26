@@ -2,11 +2,12 @@
 import { relative, resolve } from "node:path";
 import * as p from "@clack/prompts";
 import type { InstallComponent, InstallRoots, InstallScope, OpenCodeConfigPreference } from "@skynex-internal/domain";
-import { applyInstallPlan, applyUninstallPlan, createInstallPlan, createUninstallPlan, listBackups, prepareUpdatePlan, readInstallLock, readInstallLockSnapshot, resolveInstallCollisions, restoreBackup } from "@skynex-internal/installer";
+import { applyInstallPlan, applyUninstallPlan, assertAllowedIntegration, createInstallPlan, createUninstallPlan, listBackups, listCredentials, maskKey, prepareUpdatePlan, readCredential, readInstallLock, readInstallLockSnapshot, removeCredential, resolveInstallCollisions, resolveTypeSafeApiKey, restoreBackup, writeCredential } from "@skynex-internal/installer";
 import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { getManagedAgents, openCodeTarget, removeManagedPlugin } from "@skynex-internal/target-opencode";
 import { createProfileApplyService, createProfileStore, resolveGlobalSkynexRoots, type ProfileApplyRoots } from "@skynex-internal/sky-agents";
+import { runTestValidator } from "@skynex-internal/test-validator";
 
 const args = process.argv.slice(2).filter((argument) => argument !== "--");
 const command = args[0]?.startsWith("-") ? undefined : args[0];
@@ -16,15 +17,37 @@ const valueOf = (flag: string): string | undefined => {
   const index = args.lastIndexOf(flag);
   return index >= 0 ? args[index + 1] : undefined;
 };
+const valuesOf = (flag: string): string[] => {
+  const collected: string[] = [];
+  for (let index = 0; index < args.length; index += 1) {
+    if (args[index] === flag && args[index + 1] !== undefined) collected.push(args[index + 1]!);
+  }
+  return collected;
+};
+const clampNumber = (value: number, minimum: number, maximum: number): number =>
+  Math.min(Math.max(value, minimum), maximum);
+const numberFlag = (flag: string, fallback: number): number => {
+  const raw = valueOf(flag);
+  if (raw === undefined) return fallback;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || parsed <= 0) throw new Error(`Invalid value for ${flag}`);
+  return Math.trunc(parsed);
+};
 const sha256 = (value: Buffer | string): string => createHash("sha256").update(value).digest("hex");
 const scopeComponents = (scope: InstallScope): readonly InstallComponent[] => scope === "project"
   ? ["configuration", "agents", "skills"]
   : ["configuration", "agents", "skills", "plugins"];
-const knownFlags = new Set(["--", "--global", "--project", "--state-dir", "--config", "--name", "--components", "--dry-run", "--yes", "--allow-executable-plugins", "--help", "-h", "--version", "-v", "--json"]);
-const valueFlags = new Set(["--project", "--state-dir", "--config", "--name", "--components"]);
+const knownFlags = new Set(["--", "--global", "--project", "--state-dir", "--config", "--name", "--components", "--dry-run", "--yes", "--allow-executable-plugins", "--help", "-h", "--version", "-v", "--json", "--file", "--glob", "--root", "--test", "--intent", "--intents", "--out", "--model", "--timeout-ms", "--max-state-chars", "--replay"]);
+const valueFlags = new Set(["--project", "--state-dir", "--config", "--name", "--components", "--file", "--glob", "--root", "--test", "--intent", "--intents", "--out", "--model", "--timeout-ms", "--max-state-chars", "--replay"]);
+/** Never echo an unvalidated argv value: keep only the flag name before the first '=', bounded and control-free. */
+const flagName = (argument: string): string => {
+  const separator = argument.indexOf("=");
+  const name = separator === -1 ? argument : argument.slice(0, separator);
+  return name.slice(0, 64).replace(/[\u0000-\u001f\u007f]/g, "");
+};
 for (let index = positionalOffset; index < args.length; index += 1) {
   const argument = args[index]!;
-  if (argument.startsWith("-") && !knownFlags.has(argument)) throw new Error(`Unknown flag: ${argument}`);
+  if (argument.startsWith("-") && !knownFlags.has(argument)) throw new Error(`Unknown flag: ${flagName(argument)}`);
   if (!valueFlags.has(argument)) continue;
   const value = args[index + 1];
   if (!value || value.startsWith("-")) throw new Error(`Missing value for ${argument}`);
@@ -41,6 +64,8 @@ Usage:
   skynex backup list|restore <transaction-id>
   skynex profile apply --name <profile> --global [--config json|jsonc]
   skynex doctor  [--global | --project <dir>] [--json]
+  skynex validate-tests [--dry-run | --replay <answers.json>] [--glob <pattern>] [--root <dir>] [--out <dir>]
+  skynex auth set|status|remove typesafe
 
 Options:
   --global         Install into ~/.config/opencode (required for profile apply)
@@ -54,6 +79,48 @@ Options:
   -h, --help       Show help
   -v, --version    Show version`;
 
+const validateTestsHelp = `Skynex test validator
+
+Usage:
+  skynex validate-tests [--file <path>]... [--glob <pattern>]...
+  skynex validate-tests --dry-run [--file <path>]... [--glob <pattern>]...
+  skynex validate-tests --replay <answers.json> [--file <path>]... [--glob <pattern>]...
+                        [--root <dir>] [--test <text>] [--intent <text>] [--intents <path>]
+                        [--out <dir>] [--model <name>] [--timeout-ms <n>] [--max-state-chars <n>]
+
+Without --dry-run or --replay the validator runs live against TypeSafe System One
+and requires TYPESAFE_API_KEY in the environment (never printed or persisted).
+
+Options:
+  --dry-run            Extract test structure offline (no judge request)
+  --replay <path>      Judge using a saved answer set (offline)
+  --file <path>        Explicit test file, repeatable; may live outside --root
+  --glob <pattern>     Discovery glob, repeatable (default **/*.{spec,test}.{ts,tsx,js,jsx,mjs,cjs})
+  --root <dir>         Base directory for relative paths (default: current directory)
+  --test <text>        Only keep tests whose full name contains this text
+  --intent <text>      Human intent hint applied to every test
+  --intents <path>     Path to an intent map (test id > full name > relative path)
+  --out <dir>          Output directory (default: /tmp/opencode/test-validator/<UTC stamp>)
+  --model <name>       Judge model (default: jev-1.13.0)
+  --timeout-ms <n>     Judge timeout in ms (default: 10000; clamped 250..60000)
+  --max-state-chars <n> Max judge state size (default: 8000; clamped 1000..40000)
+  -h, --help           Show this help`;
+
+const authHelp = `Skynex credentials
+
+Usage:
+  skynex auth set typesafe      Store the TypeSafe API key (hidden input)
+  skynex auth status            Show whether a credential is stored (masked)
+  skynex auth remove typesafe   Remove the stored credential
+
+Only the 'typesafe' integration is supported. The key is stored in the Skynex
+state root (~/.config/skynex/credentials.json, mode 0600) and is never printed.
+Live 'skynex validate-tests' resolves TYPESAFE_API_KEY first, then this store.
+
+Options:
+  --state-dir <p>  Override the Skynex state root (useful for isolated testing)
+  -h, --help       Show this help`;
+
 const roots = (projectOverride?: string): InstallRoots => {
   const project = projectOverride ?? valueOf("--project");
   const scope: InstallScope = project ? "project" : "global";
@@ -63,6 +130,14 @@ const roots = (projectOverride?: string): InstallRoots => {
   return { scope, targetRoot, stateRoot };
 };
 
+if (command === "validate-tests" && (has("--help") || has("-h"))) {
+  console.log(validateTestsHelp);
+  process.exit(0);
+}
+if (command === "auth" && (has("--help") || has("-h"))) {
+  console.log(authHelp);
+  process.exit(0);
+}
 if (has("--help") || has("-h") || (!command && !has("--version") && !has("-v"))) {
   console.log(help);
   process.exit(0);
@@ -73,6 +148,8 @@ if (has("--version") || has("-v")) {
 }
 if (command === "profile" && args[1] === "apply" && (!has("--global") || has("--project"))) throw new Error("Profile apply requires --global and does not accept --project")
 if (command === "profile" && args[1] === "apply" && has("--state-dir")) throw new Error("Profile apply uses the global Skynex profile store and does not accept --state-dir")
+if (command === "auth" && has("--project")) throw new Error("Credentials are stored only in the global Skynex state root; 'auth' does not accept --project. Use --state-dir <path> to override the state root for isolated testing")
+if (command === "validate-tests" && has("--project")) throw new Error("Credentials are read only from the global Skynex state root; 'validate-tests' does not accept --project. Use --state-dir <path> to override the state root for isolated testing")
 
 const run = async (): Promise<void> => {
   const spinner = p.spinner();
@@ -206,7 +283,8 @@ const needsConfig = command === "install" || command === "update" || command ===
     p.outro("Skynex managed resources removed");
     return;
   }
-  if (command !== "install" && command !== "update") throw new Error(`Unknown command: ${command}`);
+  // Never echo the received token: an unknown command is unvalidated argv and may be a secret.
+  if (command !== "install" && command !== "update") throw new Error("Unknown command. Run 'skynex --help' for usage.");
 
   const requestedComponents = valueOf("--components");
   const knownComponents = new Set<InstallComponent>(["configuration", "agents", "skills", "commands", "plugins"]);
@@ -363,7 +441,85 @@ const needsConfig = command === "install" || command === "update" || command ===
   }
 };
 
-run().catch((error: unknown) => {
+const finish = (error: unknown): void => {
   p.log.error(error instanceof Error ? error.message : String(error));
   process.exitCode = 1;
-});
+};
+
+async function runValidateTests(): Promise<void> {
+  const files = valuesOf("--file");
+  const globs = valuesOf("--glob");
+  const out = valueOf("--out");
+  const test = valueOf("--test");
+  const intent = valueOf("--intent");
+  const intents = valueOf("--intents");
+  const replay = valueOf("--replay");
+  const model = valueOf("--model") ?? "jev-1.13.0";
+  const timeoutMs = clampNumber(numberFlag("--timeout-ms", 10000), 250, 60000);
+  const maxStateChars = clampNumber(numberFlag("--max-state-chars", 8000), 1000, 40000);
+  const root = valueOf("--root") ?? process.cwd();
+
+  const stateRoot = resolve(valueOf("--state-dir") ?? resolveGlobalSkynexRoots().stateRoot);
+  const stored = await readCredential(stateRoot, "typesafe");
+  const resolution = resolveTypeSafeApiKey({ env: process.env, ...(stored !== undefined ? { stored } : {}) });
+
+  const { exitCode, outDir, results } = await runTestValidator({
+    root,
+    model,
+    timeoutMs,
+    maxStateChars,
+    dryRun: has("--dry-run"),
+    ...(resolution.key !== undefined ? { apiKey: resolution.key } : {}),
+    ...(files.length ? { files } : {}),
+    ...(globs.length ? { globs } : {}),
+    ...(test !== undefined ? { testFilter: test } : {}),
+    ...(intent !== undefined ? { intent } : {}),
+    ...(intents !== undefined ? { intentsPath: intents } : {}),
+    ...(out !== undefined ? { out } : {}),
+    ...(replay !== undefined ? { replayPath: replay } : {}),
+  });
+
+  console.log(`results.json  ${resolve(outDir, "results.json")}`);
+  console.log(`report.md     ${resolve(outDir, "report.md")}`);
+  console.log(`mode=${results.run.mode} files=${results.summary.files} tests=${results.summary.tests}`);
+  process.exitCode = exitCode;
+}
+
+async function runAuth(): Promise<void> {
+  const action = args[1];
+  const { stateRoot } = roots();
+  if (action === "set") {
+    const integration = args[2];
+    if (!integration) throw new Error("Usage: skynex auth set typesafe");
+    assertAllowedIntegration(integration);
+    const secret = await p.password({ message: `Paste the ${integration} API key (input hidden)`, validate: (value) => (value.trim().length === 0 ? "The key cannot be empty" : undefined) });
+    if (p.isCancel(secret)) { p.cancel("Nothing changed"); return; }
+    await writeCredential(stateRoot, integration, secret);
+    console.log(`Stored ${integration} credential ${maskKey(secret.trim())}`);
+    return;
+  }
+  if (action === "status") {
+    const stored = await readCredential(stateRoot, "typesafe");
+    if (stored === undefined) { console.log("TypeSafe credential: no configurada"); return; }
+    const entry = (await listCredentials(stateRoot)).find((item) => item.integrationId === "typesafe");
+    console.log(`TypeSafe credential: ${entry?.masked ?? maskKey(stored)} (updatedAt ${entry?.updatedAt ?? "unknown"})`);
+    return;
+  }
+  if (action === "remove") {
+    const integration = args[2];
+    if (!integration) throw new Error("Usage: skynex auth remove typesafe");
+    assertAllowedIntegration(integration);
+    const removed = await removeCredential(stateRoot, integration);
+    console.log(removed ? `Removed ${integration} credential` : `No ${integration} credential was stored`);
+    return;
+  }
+  console.log(authHelp);
+}
+
+if (command === "validate-tests") {
+  runValidateTests().catch(finish);
+} else if (command === "auth") {
+  runAuth().catch(finish);
+} else {
+  run().catch(finish);
+}

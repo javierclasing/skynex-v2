@@ -1,0 +1,1663 @@
+{
+  "schemaVersion": 1,
+  "tool": "skynex-test-validator",
+  "toolVersion": "0.1.0",
+  "run": {
+    "mode": "replay",
+    "model": "jev-1.13.0",
+    "modelResolved": "jev-1.13.0",
+    "root": "/home/clasing/umibu/skynex-v2/scripts/test-validator/fixtures",
+    "startedAt": "2026-09-19T19:54:10.757Z",
+    "finishedAt": "2026-09-19T19:54:10.768Z",
+    "maxStateChars": 8000,
+    "timeoutMs": 10000,
+    "outDir": "scripts/fixtures/test-validator/out",
+    "warnings": []
+  },
+  "summary": {
+    "files": 1,
+    "tests": 10,
+    "judged": 10,
+    "errors": 0,
+    "byAction": {
+      "keep": 4,
+      "strengthen": 3,
+      "rewrite": 2,
+      "delete": 1
+    },
+    "highConfidence": 8,
+    "needsReview": 2,
+    "mechanical": {
+      "only": 1,
+      "skip": 1,
+      "noAsserts": 0,
+      "snapshots": 1,
+      "mockHeavy": 1
+    }
+  },
+  "files": [
+    {
+      "path": "sample.spec.ts",
+      "status": "ok",
+      "error": null,
+      "tests": [
+        {
+          "id": "sample.spec.ts::user creation > validation > rejects an invalid UUID with 400",
+          "file": "sample.spec.ts",
+          "line": 23,
+          "fullName": "user creation > validation > rejects an invalid UUID with 400",
+          "intent": "user creation > validation > rejects an invalid UUID with 400",
+          "intentSource": "inferred",
+          "signals": {
+            "asserts": {
+              "expect": 2,
+              "assert": 0,
+              "total": 2
+            },
+            "mocks": [],
+            "fileMocks": [
+              {
+                "kind": "mock",
+                "target": "../src/db"
+              }
+            ],
+            "skip": false,
+            "only": false,
+            "todo": false,
+            "snapshots": 0,
+            "async": false,
+            "parameterized": false,
+            "hooks": [
+              "beforeEach"
+            ],
+            "helpers": [
+              "makePayload"
+            ],
+            "importsReferenced": [
+              "createUser from ../src/user"
+            ],
+            "hints": {
+              "time": false,
+              "random": false,
+              "network": false
+            }
+          },
+          "stateChars": 1710,
+          "truncated": false,
+          "stateFlags": {
+            "codeTruncated": false,
+            "intentTruncated": false,
+            "siblingsTruncated": false,
+            "nameTruncated": false,
+            "helpersDropped": false,
+            "hooksDropped": false,
+            "codeFloored": false,
+            "intentFloored": false
+          },
+          "status": "judged",
+          "answers": {
+            "declared": {
+              "type": "choice",
+              "probabilities": {
+                "verifies": 0.9,
+                "partially": 0.0334,
+                "different": 0.0333,
+                "nothing": 0.0333
+              },
+              "choice": "verifies",
+              "confidence": 0.9
+            },
+            "value": {
+              "type": "choice",
+              "probabilities": {
+                "regression": 0.86,
+                "documentation": 0.035,
+                "implementation_coupled": 0.035,
+                "trivial": 0.035,
+                "duplicate": 0.035
+              },
+              "choice": "regression",
+              "confidence": 0.88
+            },
+            "fragile_time": {
+              "type": "noul",
+              "noul": 0.02
+            },
+            "fragile_order": {
+              "type": "noul",
+              "noul": 0.02
+            },
+            "fragile_randomness": {
+              "type": "noul",
+              "noul": 0.02
+            },
+            "fragile_network": {
+              "type": "noul",
+              "noul": 0.02
+            },
+            "recommendation": {
+              "type": "choice",
+              "probabilities": {
+                "keep": 0.88,
+                "strengthen": 0.04,
+                "rewrite": 0.04,
+                "delete": 0.04
+              },
+              "choice": "keep",
+              "confidence": 0.9
+            }
+          },
+          "judgment": {
+            "declared": {
+              "verdict": "verifies",
+              "probability": 0.9,
+              "margin": 0.8666,
+              "confidence": 0.9,
+              "band": "high"
+            },
+            "value": {
+              "verdict": "regression",
+              "probability": 0.86,
+              "margin": 0.825,
+              "confidence": 0.88,
+              "band": "high"
+            },
+            "fragility": {
+              "fragile_time": {
+                "probability": 0.02,
+                "derivedConfidence": 0.98,
+                "flag": "not_fragile"
+              },
+              "fragile_order": {
+                "probability": 0.02,
+                "derivedConfidence": 0.98,
+                "flag": "not_fragile"
+              },
+              "fragile_randomness": {
+                "probability": 0.02,
+                "derivedConfidence": 0.98,
+                "flag": "not_fragile"
+              },
+              "fragile_network": {
+                "probability": 0.02,
+                "derivedConfidence": 0.98,
+                "flag": "not_fragile"
+              }
+            },
+            "recommendation": {
+              "action": "keep",
+              "probability": 0.88,
+              "margin": 0.84,
+              "confidence": 0.9,
+              "band": "high"
+            },
+            "needsReview": false,
+            "band": "high",
+            "reasons": [
+              "declared confidence 0.90 >= 0.70",
+              "value confidence 0.88 >= 0.70",
+              "recommendation confidence 0.90 >= 0.70"
+            ],
+            "inconsistencies": []
+          },
+          "error": null
+        },
+        {
+          "id": "sample.spec.ts::user creation > creates a user and returns the generated id",
+          "file": "sample.spec.ts",
+          "line": 31,
+          "fullName": "user creation > creates a user and returns the generated id",
+          "intent": "user creation > creates a user and returns the generated id",
+          "intentSource": "inferred",
+          "signals": {
+            "asserts": {
+              "expect": 2,
+              "assert": 0,
+              "total": 2
+            },
+            "mocks": [],
+            "fileMocks": [
+              {
+                "kind": "mock",
+                "target": "../src/db"
+              }
+            ],
+            "skip": false,
+            "only": false,
+            "todo": false,
+            "snapshots": 0,
+            "async": false,
+            "parameterized": false,
+            "hooks": [
+              "beforeEach"
+            ],
+            "helpers": [
+              "makePayload"
+            ],
+            "importsReferenced": [
+              "createUser from ../src/user"
+            ],
+            "hints": {
+              "time": false,
+              "random": false,
+              "network": false
+            }
+          },
+          "stateChars": 1657,
+          "truncated": false,
+          "stateFlags": {
+            "codeTruncated": false,
+            "intentTruncated": false,
+            "siblingsTruncated": false,
+            "nameTruncated": false,
+            "helpersDropped": false,
+            "hooksDropped": false,
+            "codeFloored": false,
+            "intentFloored": false
+          },
+          "status": "judged",
+          "answers": {
+            "declared": {
+              "type": "choice",
+              "probabilities": {
+                "verifies": 0.93,
+                "partially": 0.0234,
+                "different": 0.0233,
+                "nothing": 0.0233
+              },
+              "choice": "verifies",
+              "confidence": 0.94
+            },
+            "value": {
+              "type": "choice",
+              "probabilities": {
+                "regression": 0.9,
+                "documentation": 0.025,
+                "implementation_coupled": 0.025,
+                "trivial": 0.025,
+                "duplicate": 0.025
+              },
+              "choice": "regression",
+              "confidence": 0.92
+            },
+            "fragile_time": {
+              "type": "noul",
+              "noul": 0.02
+            },
+            "fragile_order": {
+              "type": "noul",
+              "noul": 0.02
+            },
+            "fragile_randomness": {
+              "type": "noul",
+              "noul": 0.02
+            },
+            "fragile_network": {
+              "type": "noul",
+              "noul": 0.02
+            },
+            "recommendation": {
+              "type": "choice",
+              "probabilities": {
+                "keep": 0.91,
+                "strengthen": 0.03,
+                "rewrite": 0.03,
+                "delete": 0.03
+              },
+              "choice": "keep",
+              "confidence": 0.93
+            }
+          },
+          "judgment": {
+            "declared": {
+              "verdict": "verifies",
+              "probability": 0.93,
+              "margin": 0.9066000000000001,
+              "confidence": 0.94,
+              "band": "high"
+            },
+            "value": {
+              "verdict": "regression",
+              "probability": 0.9,
+              "margin": 0.875,
+              "confidence": 0.92,
+              "band": "high"
+            },
+            "fragility": {
+              "fragile_time": {
+                "probability": 0.02,
+                "derivedConfidence": 0.98,
+                "flag": "not_fragile"
+              },
+              "fragile_order": {
+                "probability": 0.02,
+                "derivedConfidence": 0.98,
+                "flag": "not_fragile"
+              },
+              "fragile_randomness": {
+                "probability": 0.02,
+                "derivedConfidence": 0.98,
+                "flag": "not_fragile"
+              },
+              "fragile_network": {
+                "probability": 0.02,
+                "derivedConfidence": 0.98,
+                "flag": "not_fragile"
+              }
+            },
+            "recommendation": {
+              "action": "keep",
+              "probability": 0.91,
+              "margin": 0.88,
+              "confidence": 0.93,
+              "band": "high"
+            },
+            "needsReview": false,
+            "band": "high",
+            "reasons": [
+              "declared confidence 0.94 >= 0.70",
+              "value confidence 0.92 >= 0.70",
+              "recommendation confidence 0.93 >= 0.70"
+            ],
+            "inconsistencies": []
+          },
+          "error": null
+        },
+        {
+          "id": "sample.spec.ts::user creation > persists through the db mock",
+          "file": "sample.spec.ts",
+          "line": 37,
+          "fullName": "user creation > persists through the db mock",
+          "intent": "user creation > persists through the db mock",
+          "intentSource": "inferred",
+          "signals": {
+            "asserts": {
+              "expect": 2,
+              "assert": 0,
+              "total": 2
+            },
+            "mocks": [
+              {
+                "kind": "mock",
+                "target": "../src/db"
+              },
+              {
+                "kind": "spyOn",
+                "target": "db.insert"
+              }
+            ],
+            "fileMocks": [
+              {
+                "kind": "mock",
+                "target": "../src/db"
+              }
+            ],
+            "skip": false,
+            "only": false,
+            "todo": false,
+            "snapshots": 0,
+            "async": false,
+            "parameterized": false,
+            "hooks": [
+              "beforeEach"
+            ],
+            "helpers": [],
+            "importsReferenced": [
+              "db from ../src/db"
+            ],
+            "hints": {
+              "time": false,
+              "random": false,
+              "network": false
+            }
+          },
+          "stateChars": 1700,
+          "truncated": false,
+          "stateFlags": {
+            "codeTruncated": false,
+            "intentTruncated": false,
+            "siblingsTruncated": false,
+            "nameTruncated": false,
+            "helpersDropped": false,
+            "hooksDropped": false,
+            "codeFloored": false,
+            "intentFloored": false
+          },
+          "status": "judged",
+          "answers": {
+            "declared": {
+              "type": "choice",
+              "probabilities": {
+                "partially": 0.82,
+                "verifies": 0.06,
+                "different": 0.06,
+                "nothing": 0.06
+              },
+              "choice": "partially",
+              "confidence": 0.8
+            },
+            "value": {
+              "type": "choice",
+              "probabilities": {
+                "implementation_coupled": 0.88,
+                "regression": 0.03,
+                "documentation": 0.03,
+                "trivial": 0.03,
+                "duplicate": 0.03
+              },
+              "choice": "implementation_coupled",
+              "confidence": 0.86
+            },
+            "fragile_time": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "fragile_order": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_randomness": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "fragile_network": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "recommendation": {
+              "type": "choice",
+              "probabilities": {
+                "strengthen": 0.84,
+                "keep": 0.0534,
+                "rewrite": 0.0533,
+                "delete": 0.0533
+              },
+              "choice": "strengthen",
+              "confidence": 0.82
+            }
+          },
+          "judgment": {
+            "declared": {
+              "verdict": "partially",
+              "probability": 0.82,
+              "margin": 0.76,
+              "confidence": 0.8,
+              "band": "high"
+            },
+            "value": {
+              "verdict": "implementation_coupled",
+              "probability": 0.88,
+              "margin": 0.85,
+              "confidence": 0.86,
+              "band": "high"
+            },
+            "fragility": {
+              "fragile_time": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              },
+              "fragile_order": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_randomness": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              },
+              "fragile_network": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              }
+            },
+            "recommendation": {
+              "action": "strengthen",
+              "probability": 0.84,
+              "margin": 0.7866,
+              "confidence": 0.82,
+              "band": "high"
+            },
+            "needsReview": false,
+            "band": "high",
+            "reasons": [
+              "declared confidence 0.80 >= 0.70",
+              "value confidence 0.86 >= 0.70",
+              "recommendation confidence 0.82 >= 0.70"
+            ],
+            "inconsistencies": []
+          },
+          "error": null
+        },
+        {
+          "id": "sample.spec.ts::user creation > retries the request on conflict",
+          "file": "sample.spec.ts",
+          "line": 45,
+          "fullName": "user creation > retries the request on conflict",
+          "intent": "user creation > retries the request on conflict",
+          "intentSource": "inferred",
+          "signals": {
+            "asserts": {
+              "expect": 1,
+              "assert": 0,
+              "total": 1
+            },
+            "mocks": [],
+            "fileMocks": [
+              {
+                "kind": "mock",
+                "target": "../src/db"
+              }
+            ],
+            "skip": true,
+            "only": false,
+            "todo": false,
+            "snapshots": 0,
+            "async": false,
+            "parameterized": false,
+            "hooks": [
+              "beforeEach"
+            ],
+            "helpers": [
+              "makePayload"
+            ],
+            "importsReferenced": [
+              "createUser from ../src/user"
+            ],
+            "hints": {
+              "time": false,
+              "random": false,
+              "network": false
+            }
+          },
+          "stateChars": 1549,
+          "truncated": false,
+          "stateFlags": {
+            "codeTruncated": false,
+            "intentTruncated": false,
+            "siblingsTruncated": false,
+            "nameTruncated": false,
+            "helpersDropped": false,
+            "hooksDropped": false,
+            "codeFloored": false,
+            "intentFloored": false
+          },
+          "status": "judged",
+          "answers": {
+            "declared": {
+              "type": "choice",
+              "probabilities": {
+                "different": 0.74,
+                "verifies": 0.0866,
+                "partially": 0.0867,
+                "nothing": 0.0867
+              },
+              "choice": "different",
+              "confidence": 0.72
+            },
+            "value": {
+              "type": "choice",
+              "probabilities": {
+                "documentation": 0.68,
+                "regression": 0.08,
+                "implementation_coupled": 0.08,
+                "trivial": 0.08,
+                "duplicate": 0.08
+              },
+              "choice": "documentation",
+              "confidence": 0.7
+            },
+            "fragile_time": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_order": {
+              "type": "noul",
+              "noul": 0.2
+            },
+            "fragile_randomness": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_network": {
+              "type": "noul",
+              "noul": 0.3
+            },
+            "recommendation": {
+              "type": "choice",
+              "probabilities": {
+                "rewrite": 0.72,
+                "keep": 0.0934,
+                "strengthen": 0.0933,
+                "delete": 0.0933
+              },
+              "choice": "rewrite",
+              "confidence": 0.74
+            }
+          },
+          "judgment": {
+            "declared": {
+              "verdict": "different",
+              "probability": 0.74,
+              "margin": 0.6533,
+              "confidence": 0.72,
+              "band": "high"
+            },
+            "value": {
+              "verdict": "documentation",
+              "probability": 0.68,
+              "margin": 0.6000000000000001,
+              "confidence": 0.7,
+              "band": "high"
+            },
+            "fragility": {
+              "fragile_time": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_order": {
+                "probability": 0.2,
+                "derivedConfidence": 0.8,
+                "flag": "not_fragile"
+              },
+              "fragile_randomness": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_network": {
+                "probability": 0.3,
+                "derivedConfidence": 0.7,
+                "flag": "not_fragile"
+              }
+            },
+            "recommendation": {
+              "action": "rewrite",
+              "probability": 0.72,
+              "margin": 0.6265999999999999,
+              "confidence": 0.74,
+              "band": "high"
+            },
+            "needsReview": false,
+            "band": "high",
+            "reasons": [
+              "declared confidence 0.72 >= 0.70",
+              "value confidence 0.70 >= 0.70",
+              "recommendation confidence 0.74 >= 0.70"
+            ],
+            "inconsistencies": []
+          },
+          "error": null
+        },
+        {
+          "id": "sample.spec.ts::user creation > maps a duplicate email to 409",
+          "file": "sample.spec.ts",
+          "line": 49,
+          "fullName": "user creation > maps a duplicate email to 409",
+          "intent": "user creation > maps a duplicate email to 409",
+          "intentSource": "inferred",
+          "signals": {
+            "asserts": {
+              "expect": 1,
+              "assert": 0,
+              "total": 1
+            },
+            "mocks": [],
+            "fileMocks": [
+              {
+                "kind": "mock",
+                "target": "../src/db"
+              }
+            ],
+            "skip": false,
+            "only": true,
+            "todo": false,
+            "snapshots": 0,
+            "async": false,
+            "parameterized": false,
+            "hooks": [
+              "beforeEach"
+            ],
+            "helpers": [
+              "makePayload"
+            ],
+            "importsReferenced": [
+              "createUser from ../src/user"
+            ],
+            "hints": {
+              "time": false,
+              "random": false,
+              "network": false
+            }
+          },
+          "stateChars": 1596,
+          "truncated": false,
+          "stateFlags": {
+            "codeTruncated": false,
+            "intentTruncated": false,
+            "siblingsTruncated": false,
+            "nameTruncated": false,
+            "helpersDropped": false,
+            "hooksDropped": false,
+            "codeFloored": false,
+            "intentFloored": false
+          },
+          "status": "judged",
+          "answers": {
+            "declared": {
+              "type": "choice",
+              "probabilities": {
+                "verifies": 0.84,
+                "partially": 0.0534,
+                "different": 0.0533,
+                "nothing": 0.0533
+              },
+              "choice": "verifies",
+              "confidence": 0.86
+            },
+            "value": {
+              "type": "choice",
+              "probabilities": {
+                "regression": 0.78,
+                "documentation": 0.055,
+                "implementation_coupled": 0.055,
+                "trivial": 0.055,
+                "duplicate": 0.055
+              },
+              "choice": "regression",
+              "confidence": 0.8
+            },
+            "fragile_time": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "fragile_order": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "fragile_randomness": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "fragile_network": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "recommendation": {
+              "type": "choice",
+              "probabilities": {
+                "keep": 0.8,
+                "strengthen": 0.0666,
+                "rewrite": 0.0667,
+                "delete": 0.0667
+              },
+              "choice": "keep",
+              "confidence": 0.82
+            }
+          },
+          "judgment": {
+            "declared": {
+              "verdict": "verifies",
+              "probability": 0.84,
+              "margin": 0.7866,
+              "confidence": 0.86,
+              "band": "high"
+            },
+            "value": {
+              "verdict": "regression",
+              "probability": 0.78,
+              "margin": 0.725,
+              "confidence": 0.8,
+              "band": "high"
+            },
+            "fragility": {
+              "fragile_time": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              },
+              "fragile_order": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              },
+              "fragile_randomness": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              },
+              "fragile_network": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              }
+            },
+            "recommendation": {
+              "action": "keep",
+              "probability": 0.8,
+              "margin": 0.7333000000000001,
+              "confidence": 0.82,
+              "band": "high"
+            },
+            "needsReview": false,
+            "band": "high",
+            "reasons": [
+              "declared confidence 0.86 >= 0.70",
+              "value confidence 0.80 >= 0.70",
+              "recommendation confidence 0.82 >= 0.70"
+            ],
+            "inconsistencies": []
+          },
+          "error": null
+        },
+        {
+          "id": "sample.spec.ts::user creation > matches the response snapshot",
+          "file": "sample.spec.ts",
+          "line": 54,
+          "fullName": "user creation > matches the response snapshot",
+          "intent": "user creation > matches the response snapshot",
+          "intentSource": "inferred",
+          "signals": {
+            "asserts": {
+              "expect": 1,
+              "assert": 0,
+              "total": 1
+            },
+            "mocks": [],
+            "fileMocks": [
+              {
+                "kind": "mock",
+                "target": "../src/db"
+              }
+            ],
+            "skip": false,
+            "only": false,
+            "todo": false,
+            "snapshots": 1,
+            "async": false,
+            "parameterized": false,
+            "hooks": [
+              "beforeEach"
+            ],
+            "helpers": [
+              "makePayload"
+            ],
+            "importsReferenced": [
+              "createUser from ../src/user"
+            ],
+            "hints": {
+              "time": false,
+              "random": false,
+              "network": false
+            }
+          },
+          "stateChars": 1548,
+          "truncated": false,
+          "stateFlags": {
+            "codeTruncated": false,
+            "intentTruncated": false,
+            "siblingsTruncated": false,
+            "nameTruncated": false,
+            "helpersDropped": false,
+            "hooksDropped": false,
+            "codeFloored": false,
+            "intentFloored": false
+          },
+          "status": "judged",
+          "answers": {
+            "declared": {
+              "type": "choice",
+              "probabilities": {
+                "partially": 0.55,
+                "verifies": 0.15,
+                "different": 0.15,
+                "nothing": 0.15
+              },
+              "choice": "partially",
+              "confidence": 0.58
+            },
+            "value": {
+              "type": "choice",
+              "probabilities": {
+                "trivial": 0.62,
+                "regression": 0.095,
+                "documentation": 0.095,
+                "implementation_coupled": 0.095,
+                "duplicate": 0.095
+              },
+              "choice": "trivial",
+              "confidence": 0.6
+            },
+            "fragile_time": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_order": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_randomness": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_network": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "recommendation": {
+              "type": "choice",
+              "probabilities": {
+                "rewrite": 0.58,
+                "keep": 0.14,
+                "strengthen": 0.14,
+                "delete": 0.14
+              },
+              "choice": "rewrite",
+              "confidence": 0.56
+            }
+          },
+          "judgment": {
+            "declared": {
+              "verdict": "partially",
+              "probability": 0.55,
+              "margin": 0.4,
+              "confidence": 0.58,
+              "band": "review"
+            },
+            "value": {
+              "verdict": "trivial",
+              "probability": 0.62,
+              "margin": 0.525,
+              "confidence": 0.6,
+              "band": "review"
+            },
+            "fragility": {
+              "fragile_time": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_order": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_randomness": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_network": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              }
+            },
+            "recommendation": {
+              "action": "rewrite",
+              "probability": 0.58,
+              "margin": 0.43999999999999995,
+              "confidence": 0.56,
+              "band": "review"
+            },
+            "needsReview": true,
+            "band": "review",
+            "reasons": [
+              "declared confidence 0.58 < 0.70",
+              "value confidence 0.60 < 0.70",
+              "recommendation confidence 0.56 < 0.70"
+            ],
+            "inconsistencies": []
+          },
+          "error": null
+        },
+        {
+          "id": "sample.spec.ts::user creation > keeps the timestamp and the random suffix stable",
+          "file": "sample.spec.ts",
+          "line": 58,
+          "fullName": "user creation > keeps the timestamp and the random suffix stable",
+          "intent": "user creation > keeps the timestamp and the random suffix stable",
+          "intentSource": "inferred",
+          "signals": {
+            "asserts": {
+              "expect": 2,
+              "assert": 0,
+              "total": 2
+            },
+            "mocks": [],
+            "fileMocks": [
+              {
+                "kind": "mock",
+                "target": "../src/db"
+              }
+            ],
+            "skip": false,
+            "only": false,
+            "todo": false,
+            "snapshots": 0,
+            "async": true,
+            "parameterized": false,
+            "hooks": [
+              "beforeEach"
+            ],
+            "helpers": [],
+            "importsReferenced": [],
+            "hints": {
+              "time": true,
+              "random": true,
+              "network": true
+            }
+          },
+          "stateChars": 1625,
+          "truncated": false,
+          "stateFlags": {
+            "codeTruncated": false,
+            "intentTruncated": false,
+            "siblingsTruncated": false,
+            "nameTruncated": false,
+            "helpersDropped": false,
+            "hooksDropped": false,
+            "codeFloored": false,
+            "intentFloored": false
+          },
+          "status": "judged",
+          "answers": {
+            "declared": {
+              "type": "choice",
+              "probabilities": {
+                "verifies": 0.86,
+                "partially": 0.0466,
+                "different": 0.0467,
+                "nothing": 0.0467
+              },
+              "choice": "verifies",
+              "confidence": 0.88
+            },
+            "value": {
+              "type": "choice",
+              "probabilities": {
+                "regression": 0.8,
+                "documentation": 0.05,
+                "implementation_coupled": 0.05,
+                "trivial": 0.05,
+                "duplicate": 0.05
+              },
+              "choice": "regression",
+              "confidence": 0.82
+            },
+            "fragile_time": {
+              "type": "noul",
+              "noul": 0.55
+            },
+            "fragile_order": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_randomness": {
+              "type": "noul",
+              "noul": 0.4
+            },
+            "fragile_network": {
+              "type": "noul",
+              "noul": 0.6
+            },
+            "recommendation": {
+              "type": "choice",
+              "probabilities": {
+                "strengthen": 0.84,
+                "keep": 0.0534,
+                "rewrite": 0.0533,
+                "delete": 0.0533
+              },
+              "choice": "strengthen",
+              "confidence": 0.86
+            }
+          },
+          "judgment": {
+            "declared": {
+              "verdict": "verifies",
+              "probability": 0.86,
+              "margin": 0.8133,
+              "confidence": 0.88,
+              "band": "high"
+            },
+            "value": {
+              "verdict": "regression",
+              "probability": 0.8,
+              "margin": 0.75,
+              "confidence": 0.82,
+              "band": "high"
+            },
+            "fragility": {
+              "fragile_time": {
+                "probability": 0.55,
+                "derivedConfidence": 0.55,
+                "flag": "fragile"
+              },
+              "fragile_order": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_randomness": {
+                "probability": 0.4,
+                "derivedConfidence": 0.6,
+                "flag": "uncertain"
+              },
+              "fragile_network": {
+                "probability": 0.6,
+                "derivedConfidence": 0.6,
+                "flag": "fragile"
+              }
+            },
+            "recommendation": {
+              "action": "strengthen",
+              "probability": 0.84,
+              "margin": 0.7866,
+              "confidence": 0.86,
+              "band": "high"
+            },
+            "needsReview": true,
+            "band": "review",
+            "reasons": [
+              "declared confidence 0.88 >= 0.70",
+              "value confidence 0.82 >= 0.70",
+              "recommendation confidence 0.86 >= 0.70",
+              "fragile_time 0.55 in (0.30, 0.70) flagged 'fragile'",
+              "fragile_randomness 0.40 in (0.30, 0.70) flagged 'uncertain'",
+              "fragile_network 0.60 in (0.30, 0.70) flagged 'fragile'"
+            ],
+            "inconsistencies": []
+          },
+          "error": null
+        },
+        {
+          "id": "sample.spec.ts::user creation > rejects a %s name with %i",
+          "file": "sample.spec.ts",
+          "line": 66,
+          "fullName": "user creation > rejects a %s name with %i",
+          "intent": "user creation > rejects a %s name with %i",
+          "intentSource": "inferred",
+          "signals": {
+            "asserts": {
+              "expect": 2,
+              "assert": 0,
+              "total": 2
+            },
+            "mocks": [],
+            "fileMocks": [
+              {
+                "kind": "mock",
+                "target": "../src/db"
+              }
+            ],
+            "skip": false,
+            "only": false,
+            "todo": false,
+            "snapshots": 0,
+            "async": false,
+            "parameterized": true,
+            "hooks": [
+              "beforeEach"
+            ],
+            "helpers": [
+              "makePayload"
+            ],
+            "importsReferenced": [
+              "createUser from ../src/user"
+            ],
+            "hints": {
+              "time": false,
+              "random": false,
+              "network": false
+            }
+          },
+          "stateChars": 1703,
+          "truncated": false,
+          "stateFlags": {
+            "codeTruncated": false,
+            "intentTruncated": false,
+            "siblingsTruncated": false,
+            "nameTruncated": false,
+            "helpersDropped": false,
+            "hooksDropped": false,
+            "codeFloored": false,
+            "intentFloored": false
+          },
+          "status": "judged",
+          "answers": {
+            "declared": {
+              "type": "choice",
+              "probabilities": {
+                "verifies": 0.9,
+                "partially": 0.0334,
+                "different": 0.0333,
+                "nothing": 0.0333
+              },
+              "choice": "verifies",
+              "confidence": 0.92
+            },
+            "value": {
+              "type": "choice",
+              "probabilities": {
+                "regression": 0.82,
+                "documentation": 0.045,
+                "implementation_coupled": 0.045,
+                "trivial": 0.045,
+                "duplicate": 0.045
+              },
+              "choice": "regression",
+              "confidence": 0.84
+            },
+            "fragile_time": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "fragile_order": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "fragile_randomness": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "fragile_network": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "recommendation": {
+              "type": "choice",
+              "probabilities": {
+                "keep": 0.86,
+                "strengthen": 0.0466,
+                "rewrite": 0.0467,
+                "delete": 0.0467
+              },
+              "choice": "keep",
+              "confidence": 0.88
+            }
+          },
+          "judgment": {
+            "declared": {
+              "verdict": "verifies",
+              "probability": 0.9,
+              "margin": 0.8666,
+              "confidence": 0.92,
+              "band": "high"
+            },
+            "value": {
+              "verdict": "regression",
+              "probability": 0.82,
+              "margin": 0.7749999999999999,
+              "confidence": 0.84,
+              "band": "high"
+            },
+            "fragility": {
+              "fragile_time": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              },
+              "fragile_order": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              },
+              "fragile_randomness": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              },
+              "fragile_network": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              }
+            },
+            "recommendation": {
+              "action": "keep",
+              "probability": 0.86,
+              "margin": 0.8133,
+              "confidence": 0.88,
+              "band": "high"
+            },
+            "needsReview": false,
+            "band": "high",
+            "reasons": [
+              "declared confidence 0.92 >= 0.70",
+              "value confidence 0.84 >= 0.70",
+              "recommendation confidence 0.88 >= 0.70"
+            ],
+            "inconsistencies": []
+          },
+          "error": null
+        },
+        {
+          "id": "sample.spec.ts::user creation > rejects a duplicate email",
+          "file": "sample.spec.ts",
+          "line": 75,
+          "fullName": "user creation > rejects a duplicate email",
+          "intent": "user creation > rejects a duplicate email",
+          "intentSource": "inferred",
+          "signals": {
+            "asserts": {
+              "expect": 1,
+              "assert": 0,
+              "total": 1
+            },
+            "mocks": [],
+            "fileMocks": [
+              {
+                "kind": "mock",
+                "target": "../src/db"
+              }
+            ],
+            "skip": false,
+            "only": false,
+            "todo": false,
+            "snapshots": 0,
+            "async": false,
+            "parameterized": false,
+            "hooks": [
+              "beforeEach"
+            ],
+            "helpers": [
+              "makePayload"
+            ],
+            "importsReferenced": [
+              "createUser from ../src/user"
+            ],
+            "hints": {
+              "time": false,
+              "random": false,
+              "network": false
+            }
+          },
+          "stateChars": 1584,
+          "truncated": false,
+          "stateFlags": {
+            "codeTruncated": false,
+            "intentTruncated": false,
+            "siblingsTruncated": false,
+            "nameTruncated": false,
+            "helpersDropped": false,
+            "hooksDropped": false,
+            "codeFloored": false,
+            "intentFloored": false
+          },
+          "status": "judged",
+          "answers": {
+            "declared": {
+              "type": "choice",
+              "probabilities": {
+                "verifies": 0.8,
+                "partially": 0.0666,
+                "different": 0.0667,
+                "nothing": 0.0667
+              },
+              "choice": "verifies",
+              "confidence": 0.82
+            },
+            "value": {
+              "type": "choice",
+              "probabilities": {
+                "duplicate": 0.72,
+                "regression": 0.07,
+                "documentation": 0.07,
+                "implementation_coupled": 0.07,
+                "trivial": 0.07
+              },
+              "choice": "duplicate",
+              "confidence": 0.74
+            },
+            "fragile_time": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_order": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_randomness": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_network": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "recommendation": {
+              "type": "choice",
+              "probabilities": {
+                "strengthen": 0.76,
+                "keep": 0.08,
+                "rewrite": 0.08,
+                "delete": 0.08
+              },
+              "choice": "strengthen",
+              "confidence": 0.78
+            }
+          },
+          "judgment": {
+            "declared": {
+              "verdict": "verifies",
+              "probability": 0.8,
+              "margin": 0.7333000000000001,
+              "confidence": 0.82,
+              "band": "high"
+            },
+            "value": {
+              "verdict": "duplicate",
+              "probability": 0.72,
+              "margin": 0.6499999999999999,
+              "confidence": 0.74,
+              "band": "high"
+            },
+            "fragility": {
+              "fragile_time": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_order": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_randomness": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_network": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              }
+            },
+            "recommendation": {
+              "action": "strengthen",
+              "probability": 0.76,
+              "margin": 0.68,
+              "confidence": 0.78,
+              "band": "high"
+            },
+            "needsReview": false,
+            "band": "high",
+            "reasons": [
+              "declared confidence 0.82 >= 0.70",
+              "value confidence 0.74 >= 0.70",
+              "recommendation confidence 0.78 >= 0.70"
+            ],
+            "inconsistencies": []
+          },
+          "error": null
+        },
+        {
+          "id": "sample.spec.ts::user creation > rejects a duplicate email#2",
+          "file": "sample.spec.ts",
+          "line": 80,
+          "fullName": "user creation > rejects a duplicate email",
+          "intent": "user creation > rejects a duplicate email",
+          "intentSource": "inferred",
+          "signals": {
+            "asserts": {
+              "expect": 1,
+              "assert": 0,
+              "total": 1
+            },
+            "mocks": [],
+            "fileMocks": [
+              {
+                "kind": "mock",
+                "target": "../src/db"
+              }
+            ],
+            "skip": false,
+            "only": false,
+            "todo": false,
+            "snapshots": 0,
+            "async": false,
+            "parameterized": false,
+            "hooks": [
+              "beforeEach"
+            ],
+            "helpers": [
+              "makePayload"
+            ],
+            "importsReferenced": [
+              "createUser from ../src/user"
+            ],
+            "hints": {
+              "time": false,
+              "random": false,
+              "network": false
+            }
+          },
+          "stateChars": 1584,
+          "truncated": false,
+          "stateFlags": {
+            "codeTruncated": false,
+            "intentTruncated": false,
+            "siblingsTruncated": false,
+            "nameTruncated": false,
+            "helpersDropped": false,
+            "hooksDropped": false,
+            "codeFloored": false,
+            "intentFloored": false
+          },
+          "status": "judged",
+          "answers": {
+            "declared": {
+              "type": "choice",
+              "probabilities": {
+                "verifies": 0.82,
+                "partially": 0.06,
+                "different": 0.06,
+                "nothing": 0.06
+              },
+              "choice": "verifies",
+              "confidence": 0.84
+            },
+            "value": {
+              "type": "choice",
+              "probabilities": {
+                "duplicate": 0.92,
+                "regression": 0.02,
+                "documentation": 0.02,
+                "implementation_coupled": 0.02,
+                "trivial": 0.02
+              },
+              "choice": "duplicate",
+              "confidence": 0.9
+            },
+            "fragile_time": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_order": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "fragile_randomness": {
+              "type": "noul",
+              "noul": 0.1
+            },
+            "fragile_network": {
+              "type": "noul",
+              "noul": 0.05
+            },
+            "recommendation": {
+              "type": "choice",
+              "probabilities": {
+                "delete": 0.9,
+                "keep": 0.0334,
+                "strengthen": 0.0333,
+                "rewrite": 0.0333
+              },
+              "choice": "delete",
+              "confidence": 0.92
+            }
+          },
+          "judgment": {
+            "declared": {
+              "verdict": "verifies",
+              "probability": 0.82,
+              "margin": 0.76,
+              "confidence": 0.84,
+              "band": "high"
+            },
+            "value": {
+              "verdict": "duplicate",
+              "probability": 0.92,
+              "margin": 0.9,
+              "confidence": 0.9,
+              "band": "high"
+            },
+            "fragility": {
+              "fragile_time": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_order": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              },
+              "fragile_randomness": {
+                "probability": 0.1,
+                "derivedConfidence": 0.9,
+                "flag": "not_fragile"
+              },
+              "fragile_network": {
+                "probability": 0.05,
+                "derivedConfidence": 0.95,
+                "flag": "not_fragile"
+              }
+            },
+            "recommendation": {
+              "action": "delete",
+              "probability": 0.9,
+              "margin": 0.8666,
+              "confidence": 0.92,
+              "band": "high"
+            },
+            "needsReview": false,
+            "band": "high",
+            "reasons": [
+              "declared confidence 0.84 >= 0.70",
+              "value confidence 0.90 >= 0.70",
+              "recommendation confidence 0.92 >= 0.70"
+            ],
+            "inconsistencies": []
+          },
+          "error": null
+        }
+      ]
+    }
+  ]
+}

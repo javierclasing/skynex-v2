@@ -15,6 +15,7 @@
     "@skynex-internal/domain": "workspace:*",
     "@skynex-internal/installer": "workspace:*",
     "@skynex-internal/sky-agents": "workspace:*",
+    "@skynex-internal/test-validator": "workspace:*",
     "@skynex-internal/target-opencode": "workspace:*"
   }
 }

@@ -9,6 +9,7 @@
     { "path": "packages/presentation" },
     { "path": "packages/testing" },
     { "path": "packages/sky-agents" },
+    { "path": "packages/test-validator" },
     { "path": "targets/opencode" },
     { "path": "apps/cli" }
   ]

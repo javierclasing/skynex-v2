@@ -14,6 +14,19 @@ export { compareResource } from "./planner.js";
 export { createUninstallPlan } from "./uninstall.js";
 export { listBackups, restoreBackup } from "./backup-service.js";
 export { executeTransaction } from "./transaction.js";
+export {
+  ALLOWED_INTEGRATIONS,
+  CREDENTIALS_FILE,
+  CREDENTIALS_SCHEMA_VERSION,
+  assertAllowedIntegration,
+  listCredentials,
+  maskKey,
+  readCredential,
+  removeCredential,
+  resolveTypeSafeApiKey,
+  writeCredential,
+} from "./credential-store.js";
+export type { ApiKeyResolution, CredentialSummary, IntegrationId } from "./credential-store.js";
 
 export interface InstallOperation { readonly kind: "create" | "replace" | "preserve" | "unchanged" | "conflict" | "remove"; readonly artifact: DesiredArtifact; readonly relativePath: string; readonly destination: string; readonly currentDigest: string | null; readonly desiredDigest: string; readonly previous?: ManagedResourceState; readonly decision?: UpdateDecision; }
 export interface InstallPlan { readonly id: string; readonly createdAt: string; readonly target: TargetDetection; readonly operations: readonly InstallOperation[]; readonly allowedResources?: readonly { readonly id: string; readonly relativePath: string }[]; readonly selectedComponents?: readonly InstallComponent[]; readonly updateMode?: boolean; readonly expectedPreviousLockDigest?: string | null; }

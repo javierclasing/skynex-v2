@@ -10,6 +10,7 @@
     { "path": "../../packages/domain" },
     { "path": "../../packages/installer" },
     { "path": "../../packages/sky-agents" },
+    { "path": "../../packages/test-validator" },
     { "path": "../../targets/opencode" }
   ]
 }
