@@ -4,6 +4,7 @@
   "description": "Install and manage Skynex resources from Visual Studio Code.",
   "version": "0.1.0",
   "type": "module",
+  "icon": "ico-skynex.png",
   "publisher": "skynex-local",
   "license": "Apache-2.0",
   "repository": { "type": "git", "url": "https://github.com/skynex-ai/skynex-v2" },
@@ -16,7 +17,8 @@
     "onCommand:skynex.update",
     "onCommand:skynex.uninstall",
     "onCommand:skynex.doctor",
-    "onCommand:skynex.preview"
+    "onCommand:skynex.preview",
+    "onView:skynex.dashboard"
   ],
   "contributes": {
     "commands": [
@@ -26,6 +28,24 @@
       { "command": "skynex.doctor", "title": "Skynex: Doctor" },
       { "command": "skynex.preview", "title": "Skynex: Preview Changes" }
     ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "skynex",
+          "title": "Skynex",
+          "icon": "ico-skynex.png"
+        }
+      ]
+    },
+    "views": {
+      "skynex": [
+        {
+          "id": "skynex.dashboard",
+          "name": "Skynex Dashboard",
+          "when": "true"
+        }
+      ]
+    },
     "configuration": {
       "title": "Skynex",
       "properties": {

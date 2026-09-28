@@ -2,6 +2,7 @@ import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import * as vscode from "vscode";
+import { SkynexDashboardProvider } from "./dashboard.js";
 
 type SkynexCommand = "install" | "update" | "uninstall" | "doctor";
 const output = vscode.window.createOutputChannel("Skynex");
@@ -56,13 +57,16 @@ async function install(): Promise<void> {
 }
 
 export function activate(context: vscode.ExtensionContext): void {
+  const dashboard = new SkynexDashboardProvider();
   context.subscriptions.push(
     output,
+    vscode.window.registerTreeDataProvider("skynex.dashboard", dashboard),
     vscode.commands.registerCommand("skynex.install", install),
     vscode.commands.registerCommand("skynex.update", () => run("update")),
     vscode.commands.registerCommand("skynex.uninstall", () => run("uninstall")),
     vscode.commands.registerCommand("skynex.doctor", () => run("doctor")),
     vscode.commands.registerCommand("skynex.preview", () => run("update", true)),
+    vscode.commands.registerCommand("skynex.refresh", () => dashboard.refresh()),
   );
 }
 

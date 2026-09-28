@@ -2,6 +2,10 @@
 
 Shareable preview build of the Skynex VS Code extension.
 
+The extension adds a Skynex icon to the Activity Bar. Its dashboard shows the
+current workspace and provides quick actions for installing, previewing,
+updating, diagnosing, and removing Skynex resources.
+
 ## Build
 
 ```sh
