@@ -11,15 +11,22 @@ function workspacePath(): string | undefined {
   return vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
 }
 
-function cliPath(): string {
+function cliCandidates(): string[] {
   const configured = vscode.workspace.getConfiguration("skynex").get<string>("cliPath", "").trim();
-  if (configured) return configured;
+  if (configured) return [configured];
+  const candidates: string[] = [];
   const workspace = workspacePath();
   if (workspace) {
     const localCli = join(workspace, "node_modules", ".bin", "skynex");
-    if (existsSync(localCli)) return localCli;
+    if (existsSync(localCli)) candidates.push(localCli);
   }
-  return process.platform === "win32" ? "skynex.cmd" : "skynex";
+  if (process.platform === "win32") candidates.push("skynex.cmd");
+  else candidates.push("skynex", "/usr/local/bin/skynex", "/opt/homebrew/bin/skynex");
+  return candidates;
+}
+
+function cliPath(): string {
+  return cliCandidates()[0] ?? "skynex";
 }
 
 async function run(command: SkynexCommand, dryRun = false): Promise<void> {
@@ -33,12 +40,21 @@ async function run(command: SkynexCommand, dryRun = false): Promise<void> {
   output.clear();
   output.show(true);
   output.appendLine(`$ ${cliPath()} ${args.join(" ")}`);
+  const candidates = cliCandidates();
   await new Promise<void>((resolve, reject) => {
-    const child = spawn(cliPath(), args, { cwd: workspace, shell: process.platform === "win32" });
-    child.stdout.on("data", (data: Buffer) => output.append(data.toString()));
-    child.stderr.on("data", (data: Buffer) => output.append(data.toString()));
-    child.on("error", reject);
-    child.on("close", (code) => code === 0 ? resolve() : reject(new Error(`Skynex terminó con código ${code ?? "desconocido"}.`)));
+    const tryNext = (index: number): void => {
+      const executable = candidates[index];
+      if (!executable) {
+        reject(new Error("No se encontró el CLI de Skynex. Configura skynex.cliPath o instala @skynex-ai/cli."));
+        return;
+      }
+      const child = spawn(executable, args, { cwd: workspace, shell: process.platform === "win32" });
+      child.stdout.on("data", (data: Buffer) => output.append(data.toString()));
+      child.stderr.on("data", (data: Buffer) => output.append(data.toString()));
+      child.on("error", (error: NodeJS.ErrnoException) => error.code === "ENOENT" ? tryNext(index + 1) : reject(error));
+      child.on("close", (code) => code === 0 ? resolve() : reject(new Error(`Skynex terminó con código ${code ?? "desconocido"}.`)));
+    };
+    tryNext(0);
   }).then(
     () => void vscode.window.showInformationMessage(`Skynex: ${command} completado.`),
     (error: unknown) => void vscode.window.showErrorMessage(error instanceof Error ? error.message : String(error)),
