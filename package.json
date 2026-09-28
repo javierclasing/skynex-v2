@@ -26,6 +26,7 @@
     "package:vscode": "pnpm --filter skynex-vscode package"
   },
   "devDependencies": {
+    "@skynex-ai/cli": "workspace:*",
     "@types/node": "^24.3.0",
     "typescript": "7.1.0-dev.20260910.1"
   }
