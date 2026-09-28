@@ -21,7 +21,9 @@
     "pack:cli": "pnpm build:distribution && pnpm --filter @skynex-ai/cli pack --pack-destination /tmp/opencode/skynex-pack",
     "build:distribution": "pnpm --filter @skynex-ai/cli build:distribution",
     "verify:package": "node scripts/verify-npm-cli-package.mjs --static-and-install",
-    "verify:package:release": "node scripts/verify-npm-cli-package.mjs --release"
+    "verify:package:release": "node scripts/verify-npm-cli-package.mjs --release",
+    "build:vscode": "pnpm --filter skynex-vscode build",
+    "package:vscode": "pnpm --filter skynex-vscode package"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",

@@ -1,0 +1,47 @@
+{
+  "name": "skynex-vscode",
+  "displayName": "Skynex",
+  "description": "Install and manage Skynex resources from Visual Studio Code.",
+  "version": "0.1.0",
+  "type": "module",
+  "publisher": "skynex-local",
+  "license": "Apache-2.0",
+  "repository": { "type": "git", "url": "https://github.com/skynex-ai/skynex-v2" },
+  "engines": { "vscode": ">=1.85.0" },
+  "categories": ["Other"],
+  "keywords": ["skynex", "opencode", "ai", "agents", "skills"],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onCommand:skynex.install",
+    "onCommand:skynex.update",
+    "onCommand:skynex.uninstall",
+    "onCommand:skynex.doctor",
+    "onCommand:skynex.preview"
+  ],
+  "contributes": {
+    "commands": [
+      { "command": "skynex.install", "title": "Skynex: Install" },
+      { "command": "skynex.update", "title": "Skynex: Update" },
+      { "command": "skynex.uninstall", "title": "Skynex: Uninstall" },
+      { "command": "skynex.doctor", "title": "Skynex: Doctor" },
+      { "command": "skynex.preview", "title": "Skynex: Preview Changes" }
+    ],
+    "configuration": {
+      "title": "Skynex",
+      "properties": {
+        "skynex.cliPath": {
+          "type": "string",
+          "default": "",
+          "description": "Optional path to the Skynex CLI executable. Leave empty to use skynex on PATH."
+        }
+      }
+    }
+  },
+  "scripts": { "build": "tsc -p tsconfig.json", "package": "vsce package --no-dependencies" },
+  "dependencies": { "@vscode/vsce": "^3.6.0" },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "7.1.0-dev.20260910.1"
+  }
+}

@@ -1,6 +1,7 @@
 {
   "files": [],
   "references": [
+    { "path": "apps/vscode" },
     { "path": "packages/domain" },
     { "path": "packages/application" },
     { "path": "packages/catalog" },
