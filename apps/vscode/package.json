@@ -18,7 +18,8 @@
     "onCommand:skynex.uninstall",
     "onCommand:skynex.doctor",
     "onCommand:skynex.preview",
-    "onView:skynex.dashboard"
+    "onView:skynex.dashboard",
+    "onView:skynex.chat"
   ],
   "contributes": {
     "commands": [
@@ -26,7 +27,9 @@
       { "command": "skynex.update", "title": "Skynex: Update" },
       { "command": "skynex.uninstall", "title": "Skynex: Uninstall" },
       { "command": "skynex.doctor", "title": "Skynex: Doctor" },
-      { "command": "skynex.preview", "title": "Skynex: Preview Changes" }
+      { "command": "skynex.preview", "title": "Skynex: Preview Changes" },
+      { "command": "skynex.openChat", "title": "Skynex: Open Chat" },
+      { "command": "skynex.configureChat", "title": "Skynex: Configure Chat" }
     ],
     "viewsContainers": {
       "activitybar": [
@@ -44,6 +47,13 @@
           "name": "Skynex Dashboard",
           "when": "true"
         }
+      ],
+      "skynex-chat": [
+        {
+          "id": "skynex.chat",
+          "name": "Skynex Chat",
+          "when": "true"
+        }
       ]
     },
     "configuration": {
@@ -53,8 +63,28 @@
           "type": "string",
           "default": "",
           "description": "Optional path to the Skynex CLI executable. Leave empty to use skynex on PATH."
+        },
+        "skynex.chat.provider": {
+          "type": "string",
+          "enum": ["ollama", "openai", "anthropic", "gemini", "openrouter"],
+          "default": "ollama",
+          "description": "Chat provider used by Skynex. Ollama runs locally."
+        },
+        "skynex.chat.model": {
+          "type": "string",
+          "default": "llama3.2",
+          "description": "Model name used by the Skynex chat."
         }
       }
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "skynex.configureChat",
+          "when": "view == skynex.chat",
+          "group": "navigation"
+        }
+      ]
     }
   },
   "scripts": { "build": "tsc -p tsconfig.json", "package": "vsce package --no-dependencies" },

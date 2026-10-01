@@ -1,0 +1,422 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "agent": {
+    "coder": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "edit": "allow",
+        "bash": "ask",
+        "task": "deny",
+        "question": "deny"
+      }
+    },
+
+    "diagnostic-researcher": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow"
+      }
+    },
+
+    "infrastructure-engineer": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "edit": "allow",
+        "bash": "ask"
+      }
+    },
+
+    "mentor": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "task": {
+          "*": "deny",
+          "coder": "allow"
+        },
+        "question": "deny"
+      }
+    },
+
+    "pr-reviewer": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow"
+      }
+    },
+
+    "security": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow"
+      }
+    },
+
+    "skill-validator": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow"
+      }
+    },
+
+    "thalam": {
+      "mode": "all",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "skill": "allow",
+        "task": {
+          "*": "deny",
+          "coder": "allow",
+          "verifier": "allow",
+          "test-engineer": "allow"
+        },
+        "question": "allow",
+        "edit": "ask",
+        "bash": "ask"
+      }
+    },
+
+    "task-classifier": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow"
+      }
+    },
+
+    "tech-planner": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "edit": "ask"
+      }
+    },
+
+    "test-engineer": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow",
+        "edit": "allow",
+        "bash": "ask"
+      }
+    },
+
+    "test-reviewer": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow"
+      }
+    },
+
+    "verifier": {
+      "mode": "subagent",
+      "permission": {
+        "*": "deny",
+        "read": {
+          "*": "allow",
+          ".env": "deny",
+          ".env.*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny",
+          ".npmrc": "deny",
+          "**/.npmrc": "deny",
+          ".netrc": "deny",
+          "**/.netrc": "deny",
+          "*.pem": "deny",
+          "**/*.pem": "deny",
+          "*.key": "deny",
+          "**/*.key": "deny",
+          "credentials.json": "deny",
+          "**/credentials.json": "deny",
+          "*service-account*.json": "deny",
+          "**/*service-account*.json": "deny",
+          "**/.aws/**": "deny",
+          "**/.ssh/**": "deny"
+        },
+        "external_directory": "deny",
+        "glob": "allow",
+        "grep": "allow"
+      }
+    }
+  },
+
+  "mcp": {
+    "browsermcp": {
+      "command": [
+        "npx",
+        "@browsermcp/mcp@latest"
+      ],
+      "enabled": true,
+      "type": "local"
+    }
+  }
+}
